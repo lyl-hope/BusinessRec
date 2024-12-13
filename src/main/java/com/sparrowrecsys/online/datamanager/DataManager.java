@@ -49,10 +49,10 @@ public class DataManager {
 
     // 从文件系统加载数据，包括电影、评分、链接数据和模型数据如嵌入向量
     public void loadData(String productDataPath, String ratingDataPath, String movieEmbPath, String userEmbPath, String movieRedisKey, String userRedisKey) throws Exception{
-        loadMovieData(productDataPath);
+        loadProductData(productDataPath);
         //loadLinkData(linkDataPath);
         loadRatingData(ratingDataPath);
-        loadMovieEmb(movieEmbPath, movieRedisKey);
+        loadProductEmb(movieEmbPath, movieRedisKey);
         if (Config.IS_LOAD_ITEM_FEATURE_FROM_REDIS){
             loadProductFeatures("mf:");
         }
@@ -74,13 +74,28 @@ public class DataManager {
                 if (productData.length == 7) { // 确保数据长度匹配
                     Product product = new Product();
                     product.setProductId(Integer.parseInt(productData[0].trim())); // 解析产品ID
-                    product.setName(productData[1].trim()); // 解析产品名称
-                    product.setCategoriesId(productData[2].trim()); // 解析类别ID
-                    product.setAmazonId(productData[3].trim()); // 解析Amazon ID
-                    product.setImageUrl(productData[4].trim()); // 解析图片URL
-                    product.setCategories(productData[5].trim()); // 解析类别
+                    product.setTitle(productData[1].trim()); // 解析产品名称
+                    String genres = productData[2];
+                    if (!genres.trim().isEmpty()){
+                        String[] genreArray = genres.split("\\|");
+                        for (String genre : genreArray){
+                            product.addCategory(genre);
+                            addProduct2CategoryIndex(genre, product);
+                        }
+                    }
+                   // product.setCategoriesId(productData[2].trim()); // 解析类别ID
+                    //product.setAmazonId(productData[3].trim()); // 解析Amazon ID
+                    //product.setImageUrl(productData[4].trim()); // 解析图片URL
+                    //product.setCategories(productData[5].trim()); // 解析类别
                     product.setTags(productData[6].trim()); // 解析标签
-
+                    String tags = productData[6];
+                    if (!genres.trim().isEmpty()){
+                        String[] genreArray = genres.split("\\|");
+                        for (String genre : genreArray){
+                            product.addCategory(genre);
+                            addProduct2CategoryIndex(genre, product);
+                        }
+                    }
                     // 假设你有一个Map来存储Product对象，类似movieMap
                     this.productMap.put(product.getProductId(), product);
                 }

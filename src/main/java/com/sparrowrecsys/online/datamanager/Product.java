@@ -12,13 +12,13 @@ import java.util.Map;
 /**
  * Movie 类，包含从movielens的movies.csv加载的属性和其他高级数据，如平均评分、嵌入向量等。
  */
-public class Movie {
-    int movieId; // 电影ID
+public class Product{
+    int productId; // 电影ID
     String title; // 电影标题
-    int releaseYear; // 上映年份
-    String imdbId; // IMDb ID
-    String tmdbId; // TMDb ID
-    List<String> genres; // 电影类型列表
+    //int releaseYear; // 上映年份
+    //String imdbId; // IMDb ID
+    //String tmdbId; // TMDb ID
+    List<String> categories; // 电影类型列表
     // 用户评分数量
     int ratingNumber;
     // 平均评分
@@ -34,7 +34,7 @@ public class Movie {
 
     // 电影特征映射
     @JsonIgnore
-    Map<String, String> movieFeatures;
+    Map<String, String> productFeatures;
 
     // 前10个评分的大小
     final int TOP_RATING_SIZE = 10;
@@ -44,24 +44,24 @@ public class Movie {
     List<Rating> topRatings;
 
     // 构造函数，初始化默认值
-    public Movie() {
+    public Product() {
         ratingNumber = 0;
         averageRating = 0;
-        this.genres = new ArrayList<>();
+        this.categories = new ArrayList<>();
         this.ratings = new ArrayList<>();
         this.topRatings = new LinkedList<>();
         this.emb = null;
-        this.movieFeatures = null;
+        this.productFeatures = null;
     }
 
     // 获取电影ID
-    public int getMovieId() {
-        return movieId;
+    public int getProductId() {
+        return productId;
     }
 
     // 设置电影ID
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     // 获取电影标题
@@ -75,28 +75,28 @@ public class Movie {
     }
 
     // 获取上映年份
-    public int getReleaseYear() {
-        return releaseYear;
-    }
+//    public int getReleaseYear() {
+//        return releaseYear;
+//    }
 
     // 设置上映年份
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
-    }
+//    public void setReleaseYear(int releaseYear) {
+//        this.releaseYear = releaseYear;
+//    }
 
     // 获取电影类型列表
     public List<String> getGenres() {
-        return genres;
+        return categories;
     }
 
     // 添加电影类型
-    public void addGenre(String genre){
-        this.genres.add(genre);
+    public void addCategory(String category){
+        this.categories.add(category);
     }
 
     // 设置电影类型列表
-    public void setGenres(List<String> genres) {
-        this.genres = genres;
+    public void setCategory(List<String> categories) {
+        this.categories = categories;
     }
 
     // 获取评分列表
@@ -132,24 +132,24 @@ public class Movie {
     }
 
     // 获取IMDb ID
-    public String getImdbId() {
-        return imdbId;
-    }
-
-    // 设置IMDb ID
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    // 获取TMDb ID
-    public String getTmdbId() {
-        return tmdbId;
-    }
-
-    // 设置TMDb ID
-    public void setTmdbId(String tmdbId) {
-        this.tmdbId = tmdbId;
-    }
+//    public String getImdbId() {
+//        return imdbId;
+//    }
+//
+//    // 设置IMDb ID
+//    public void setImdbId(String imdbId) {
+//        this.imdbId = imdbId;
+//    }
+//
+//    // 获取TMDb ID
+//    public String getTmdbId() {
+//        return tmdbId;
+//    }
+//
+//    // 设置TMDb ID
+//    public void setTmdbId(String tmdbId) {
+//        this.tmdbId = tmdbId;
+//    }
 
     // 获取评分数量
     public int getRatingNumber() {
@@ -172,12 +172,12 @@ public class Movie {
     }
 
     // 获取电影特征映射
-    public Map<String, String> getMovieFeatures() {
-        return movieFeatures;
+    public Map<String, String> getProductFeatures() {
+        return productFeatures;
     }
 
     // 设置电影特征映射
-    public void setMovieFeatures(Map<String, String> movieFeatures) {
-        this.movieFeatures = movieFeatures;
+    public void setProductFeatures(Map<String, String> productFeatures) {
+        this.productFeatures = productFeatures;
     }
 }
