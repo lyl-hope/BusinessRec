@@ -21,7 +21,7 @@ public class DataManager {
     // 单例实例
     private static volatile DataManager instance;
     // 存储电影数据的映射
-    HashMap<Integer, Movie> productMap;
+    HashMap<Integer, Product> productMap;
     // 存储用户数据的映射
     HashMap<Integer, User> userMap;
     // 类型反向索引，用于快速查询某类型的所有电影
@@ -87,13 +87,13 @@ public class DataManager {
                     //product.setAmazonId(productData[3].trim()); // 解析Amazon ID
                     //product.setImageUrl(productData[4].trim()); // 解析图片URL
                     //product.setCategories(productData[5].trim()); // 解析类别
-                    product.setTags(productData[6].trim()); // 解析标签
+                    //product.setTags(productData[6].trim()); // 解析标签
                     String tags = productData[6];
-                    if (!genres.trim().isEmpty()){
-                        String[] genreArray = genres.split("\\|");
-                        for (String genre : genreArray){
-                            product.addCategory(genre);
-                            addProduct2CategoryIndex(genre, product);
+                    if (!tags.trim().isEmpty()){
+                        String[] tagArray = tags.split("\\|");
+                        for (String tag : tagArray){
+                            product.addTag(tag);
+                            addProduct2TagIndex(tag, product);
                         }
                     }
                     // 假设你有一个Map来存储Product对象，类似movieMap
@@ -263,12 +263,18 @@ public class DataManager {
 
     // 将电影添加到类型反向索引中
     private void addProduct2CategoryIndex(String category, Product product) {
-        if (!this.categoryReverseIndexMap.containsKey(category)) {
+        if (!this.tagReverseIndexMap.containsKey(category)) {
+            this.tagReverseIndexMap.put(category, new ArrayList<>());
+        }
+        this.categoryReverseIndexMap.get(category).add(product);
+    }
+    // 将电影添加到类型反向索引中tag
+    private void addProduct2TagIndex(String category, Product product) {
+        if (!this.tagReverseIndexMap.containsKey(category)) {
             this.categoryReverseIndexMap.put(category, new ArrayList<>());
         }
         this.categoryReverseIndexMap.get(category).add(product);
     }
-
 
     // 根据类型获取电影，并按sortBy方法排序
 //    public List<Movie> getMoviesByGenre(String genre, int size, String sortBy){

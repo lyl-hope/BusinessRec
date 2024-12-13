@@ -19,6 +19,7 @@ public class Product{
     //String imdbId; // IMDb ID
     //String tmdbId; // TMDb ID
     List<String> categories; // 电影类型列表
+    List<String> tags; // 产品tag列表
     // 用户评分数量
     int ratingNumber;
     // 平均评分
@@ -85,7 +86,7 @@ public class Product{
 //    }
 
     // 获取电影类型列表
-    public List<String> getGenres() {
+    public List<String> getCategories() {
         return categories;
     }
 
@@ -98,7 +99,20 @@ public class Product{
     public void setCategory(List<String> categories) {
         this.categories = categories;
     }
+    //TAGs
+    public List<String> getTags() {
+        return tags;
+    }
 
+    // 添加电影类型
+    public void addTag(String tag){
+        this.tags.add(tag);
+    }
+
+    // 设置产品tag列表
+    public void setTag(List<String> tags) {
+        this.tags = tags;
+    }
     // 获取评分列表
     public List<Rating> getRatings() {
         return ratings;
