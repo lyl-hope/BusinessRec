@@ -1,10 +1,9 @@
 package com.sparrowrecsys.online.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparrowrecsys.online.datamanager.DataManager;
 import com.sparrowrecsys.online.datamanager.Product;
+import com.sparrowrecsys.online.recprocess.SimilarProductProcess;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,13 +11,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * RecommendationService 类，提供基于不同输入的推荐服务
+ * SimilarProductService 类，根据特定电影推荐相似电影
  */
-public class RecommendationService extends HttpServlet {
+public class SimilarProductService extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException,
-            IOException {
+                         HttpServletResponse response) throws IOException {
         try {
             // 设置响应内容类型为JSON
             response.setContentType("application/json");
@@ -29,15 +27,15 @@ public class RecommendationService extends HttpServlet {
             // 设置允许跨域访问
             response.setHeader("Access-Control-Allow-Origin", "*");
 
-            // 获取电影类型参数
-            String category = request.getParameter("category");
+            // 获取电影ID参数
+            String productId = request.getParameter("productId");
             // 获取返回电影数量参数
             String size = request.getParameter("size");
-            // 获取排序算法参数
-            String sortby = request.getParameter("sortby");
+            // 获取计算相似度的模型参数，例如embedding, graph-embedding
+            String model = request.getParameter("model");
 
-            // 根据电影类型、数量和排序算法获取电影列表
-            List<Product> products = DataManager.getInstance().getProductsByCategory(category, Integer.parseInt(size), sortby);
+            // 使用 SimilarProductProcess 获取相似电影列表
+            List<Product> products = SimilarProductProcess.getRecList(Integer.parseInt(productId), Integer.parseInt(size), model);
 
             // 将电影列表转换为JSON格式并返回
             ObjectMapper mapper = new ObjectMapper();

@@ -25,8 +25,8 @@ public class DataManager {
     // 存储用户数据的映射
     HashMap<Integer, User> userMap;
     // 类型反向索引，用于快速查询某类型的所有电影
-    HashMap<String, List<Movie>> categoryReverseIndexMap;
-
+    HashMap<String, List<Product>> categoryReverseIndexMap;
+    HashMap<String, List<Product>> tagReverseIndexMap;
     // 私有构造函数，初始化数据结构
     private DataManager(){
         this.productMap = new HashMap<>();
@@ -269,11 +269,11 @@ public class DataManager {
         this.categoryReverseIndexMap.get(category).add(product);
     }
     // 将电影添加到类型反向索引中tag
-    private void addProduct2TagIndex(String category, Product product) {
-        if (!this.tagReverseIndexMap.containsKey(category)) {
-            this.categoryReverseIndexMap.put(category, new ArrayList<>());
+    private void addProduct2TagIndex(String tag, Product product) {
+        if (!this.tagReverseIndexMap.containsKey(tag)) {
+            this.tagReverseIndexMap.put(tag, new ArrayList<>());
         }
-        this.categoryReverseIndexMap.get(category).add(product);
+        this.tagReverseIndexMap.get(tag).add(product);
     }
 
     // 根据类型获取电影，并按sortBy方法排序
@@ -310,7 +310,8 @@ public class DataManager {
                     break;
                 case "price"://maybe unused
                     // 按价格从低到高排序
-                    products.sort((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()));
+                    //products.sort((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()));
+                    products.sort((p1, p2) -> Double.compare(p2.getAverageRating(), p1.getAverageRating()));
                     break;
                 default:
                     // 不进行排序
@@ -352,7 +353,8 @@ public class DataManager {
                 break;
             case "price":
                 // 按价格从低到高排序
-                products.sort((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()));
+                //products.sort((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()));
+                products.sort((p1, p2) -> Double.compare(p2.getAverageRating(), p1.getAverageRating()));
                 break;
             default:
                 // 不排序
@@ -369,8 +371,8 @@ public class DataManager {
 //    public Movie getMovieById(int productId){
 //        return this.movieMap.get(productId);
 //    }
-    public Movie getProductById(int productId){
-        return this.ProductMap.get(productId);
+    public Product getProductById(int productId){
+        return this.productMap.get(productId);
     }
     // 根据用户ID获取用户对象
     public User getUserById(int userId){

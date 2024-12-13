@@ -2,7 +2,7 @@ package com.sparrowrecsys.online.recprocess;
 
 import com.sparrowrecsys.online.datamanager.DataManager;
 import com.sparrowrecsys.online.datamanager.User;
-import com.sparrowrecsys.online.datamanager.Movie;
+import com.sparrowrecsys.online.datamanager.Product;
 import com.sparrowrecsys.online.datamanager.RedisClient;
 import com.sparrowrecsys.online.util.Config;
 import com.sparrowrecsys.online.util.Utility;
@@ -25,7 +25,7 @@ public class RecForYouProcess {
      * @param model 用于计算相似度的模型
      * @return 推荐电影列表
      */
-    public static List<Movie> getRecList(int userId, int size, String model){
+    public static List<Product> getRecList(int userId, int size, String model){
         // 获取用户对象
         User user = DataManager.getInstance().getUserById(userId);
         if (null == user){
@@ -33,7 +33,7 @@ public class RecForYouProcess {
         }
         final int CANDIDATE_SIZE = 800;
         // 获取候选电影列表
-        List<Movie> candidates = DataManager.getInstance().getMovies(CANDIDATE_SIZE, "rating");
+        List<Product> candidates = DataManager.getInstance().getProducts(CANDIDATE_SIZE, "rating");
 
         // 如果数据源是Redis，从Redis加载用户嵌入向量
         if (Config.EMB_DATA_SOURCE.equals(Config.DATA_SOURCE_REDIS)){
@@ -54,7 +54,7 @@ public class RecForYouProcess {
         }
 
         // 对候选电影进行排序
-        List<Movie> rankedList = ranker(user, candidates, model);
+        List<Product> rankedList = ranker(user, candidates, model);
 
         // 返回前size个推荐电影
         if (rankedList.size() > size){
@@ -70,13 +70,13 @@ public class RecForYouProcess {
      * @param model 用于排序的模型名称
      * @return 排序后的电影列表
      */
-    public static List<Movie> ranker(User user, List<Movie> candidates, String model){
-        HashMap<Movie, Double> candidateScoreMap = new HashMap<>();
+    public static List<Product> ranker(User user, List<Product> candidates, String model){
+        HashMap<Product, Double> candidateScoreMap = new HashMap<>();
 
         switch (model){
             case "emb":
                 // 使用嵌入向量计算相似度
-                for (Movie candidate : candidates){
+                for (Product candidate : candidates){
                     double similarity = calculateEmbSimilarScore(user, candidate);
                     candidateScoreMap.put(candidate, similarity);
                 }
@@ -93,7 +93,7 @@ public class RecForYouProcess {
         }
 
         // 将候选电影按得分排序
-        List<Movie> rankedList = new ArrayList<>();
+        List<Product> rankedList = new ArrayList<>();
         candidateScoreMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEach(m -> rankedList.add(m.getKey()));
         return rankedList;
     }
@@ -104,7 +104,7 @@ public class RecForYouProcess {
      * @param candidate 候选电影
      * @return 相似度得分
      */
-    public static double calculateEmbSimilarScore(User user, Movie candidate){
+    public static double calculateEmbSimilarScore(User user, Product candidate){
         if (null == user || null == candidate || null == user.getEmb()){
             return -1;
         }
@@ -117,17 +117,17 @@ public class RecForYouProcess {
      * @param candidates 候选电影列表
      * @param candidateScoreMap 保存预测得分的映射
      */
-    public static void callNeuralCFTFServing(User user, List<Movie> candidates, HashMap<Movie, Double> candidateScoreMap){
+    public static void callNeuralCFTFServing(User user, List<Product> candidates, HashMap<Product, Double> candidateScoreMap){
         if (null == user || null == candidates || candidates.size() == 0){
             return;
         }
 
         // 构建请求的JSON对象
         JSONArray instances = new JSONArray();
-        for (Movie m : candidates){
+        for (Product m : candidates){
             JSONObject instance = new JSONObject();
             instance.put("userId", user.getUserId());
-            instance.put("movieId", m.getProductId());
+            instance.put("productId", m.getProductId());
             instances.put(instance);
         }
 

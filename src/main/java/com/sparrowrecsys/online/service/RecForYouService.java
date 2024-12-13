@@ -3,7 +3,7 @@ package com.sparrowrecsys.online.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparrowrecsys.online.recprocess.RecForYouProcess;
 import com.sparrowrecsys.online.util.ABTest;
-import com.sparrowrecsys.online.datamanager.Movie;
+import com.sparrowrecsys.online.datamanager.Product;
 import com.sparrowrecsys.online.util.Config;
 
 import javax.servlet.ServletException;
@@ -45,12 +45,12 @@ public class RecForYouService extends HttpServlet {
             }
 
             // 获取推荐电影列表
-            List<Movie> movies = RecForYouProcess.getRecList(Integer.parseInt(userId), Integer.parseInt(size), model);
+            List<Product> products = RecForYouProcess.getRecList(Integer.parseInt(userId), Integer.parseInt(size), model);
 
             // 将电影列表转换为JSON格式并返回
             ObjectMapper mapper = new ObjectMapper();
-            String jsonMovies = mapper.writeValueAsString(movies);
-            response.getWriter().println(jsonMovies);
+            String jsonProducts = mapper.writeValueAsString(products);
+            response.getWriter().println(jsonProducts);
 
         } catch (Exception e) {
             e.printStackTrace();

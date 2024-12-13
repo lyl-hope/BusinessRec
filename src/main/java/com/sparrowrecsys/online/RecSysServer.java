@@ -78,8 +78,8 @@ public class RecSysServer {
         System.out.printf("Web 根目录 URI: %s%n", webRootUri.getPath());
 
         // 将所有数据加载到 DataManager
-        DataManager.getInstance().loadData(webRootUri.getPath() + "sampledata/movies.csv",
-                webRootUri.getPath() + "sampledata/links.csv", webRootUri.getPath() + "sampledata/ratings.csv",
+        DataManager.getInstance().loadData(webRootUri.getPath() + "sampledata/products.csv",
+                 webRootUri.getPath() + "sampledata/ratings.csv",
                 webRootUri.getPath() + "modeldata/item2vecEmb.csv",
                 webRootUri.getPath() + "modeldata/userEmb.csv",
                 "i2vEmb", "uEmb");
@@ -93,9 +93,9 @@ public class RecSysServer {
 
         // 将服务与不同的 Servlet 绑定
         context.addServlet(DefaultServlet.class, "/");
-        context.addServlet(new ServletHolder(new MovieService()), "/getmovie");
+        context.addServlet(new ServletHolder(new ProductService()), "/getproduct");
         context.addServlet(new ServletHolder(new UserService()), "/getuser");
-        context.addServlet(new ServletHolder(new SimilarMovieService()), "/getsimilarmovie");
+        context.addServlet(new ServletHolder(new SimilarProductService()), "/getsimilarproduct");
         context.addServlet(new ServletHolder(new RecommendationService()), "/getrecommendation");
         context.addServlet(new ServletHolder(new RecForYouService()), "/getrecforyou");
 
