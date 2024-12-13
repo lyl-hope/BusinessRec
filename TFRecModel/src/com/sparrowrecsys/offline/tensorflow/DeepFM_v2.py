@@ -7,13 +7,11 @@ import tensorflow as tf
 """
 
 # 训练样本路径，请更改为你的本地路径
-training_samples_file_path = tf.keras.utils.get_file("trainingSamples.csv",
-                                                     "file:///Users/zhewang/Workspace/SparrowRecSys/src/main"
-                                                     "/resources/webroot/sampledata/trainingSamples.csv")
+training_samples_file_path = tf.keras.utils.get_file(r"E:\处理出来的csv数据\trainingSamples.csv",
+                                                     r"file:///E:\处理出来的csv数据\/trainingSamples.csv")
 # 测试样本路径，请更改为你的本地路径
-test_samples_file_path = tf.keras.utils.get_file("testSamples.csv",
-                                                 "file:///Users/zhewang/Workspace/SparrowRecSys/src/main"
-                                                 "/resources/webroot/sampledata/testSamples.csv")
+test_samples_file_path = tf.keras.utils.get_file(r"E:\处理出来的csv数据\testSamples.csv",
+                                                 r"file:///E:\处理出来的csv数据\.csv")
 
 # 加载样本为 tf 数据集
 def get_dataset(file_path):
@@ -32,63 +30,57 @@ test_dataset = get_dataset(test_samples_file_path)
 
 # 定义 Keras 模型的输入
 inputs = {
-    'movieAvgRating': tf.keras.layers.Input(name='movieAvgRating', shape=(), dtype='float32'),
-    'movieRatingStddev': tf.keras.layers.Input(name='movieRatingStddev', shape=(), dtype='float32'),
-    'movieRatingCount': tf.keras.layers.Input(name='movieRatingCount', shape=(), dtype='int32'),
+    'productAvgRating': tf.keras.layers.Input(name='productAvgRating', shape=(), dtype='float32'),
+    'productRatingStddev': tf.keras.layers.Input(name='productRatingStddev', shape=(), dtype='float32'),
+    'productRatingCount': tf.keras.layers.Input(name='productRatingCount', shape=(), dtype='int32'),
     'userAvgRating': tf.keras.layers.Input(name='userAvgRating', shape=(), dtype='float32'),
     'userRatingStddev': tf.keras.layers.Input(name='userRatingStddev', shape=(), dtype='float32'),
     'userRatingCount': tf.keras.layers.Input(name='userRatingCount', shape=(), dtype='int32'),
-    'releaseYear': tf.keras.layers.Input(name='releaseYear', shape=(), dtype='int32'),
 
     'productId': tf.keras.layers.Input(name='productId', shape=(), dtype='int32'),
     'userId': tf.keras.layers.Input(name='userId', shape=(), dtype='int32'),
-    'userRatedMovie1': tf.keras.layers.Input(name='userRatedMovie1', shape=(), dtype='int32'),
+    'userRatedProduct1': tf.keras.layers.Input(name='userRatedProduct1', shape=(), dtype='int32'),
 
-    'userGenre1': tf.keras.layers.Input(name='userGenre1', shape=(), dtype='string'),
-    'userGenre2': tf.keras.layers.Input(name='userGenre2', shape=(), dtype='string'),
-    'userGenre3': tf.keras.layers.Input(name='userGenre3', shape=(), dtype='string'),
-    'userGenre4': tf.keras.layers.Input(name='userGenre4', shape=(), dtype='string'),
-    'userGenre5': tf.keras.layers.Input(name='userGenre5', shape=(), dtype='string'),
-    'movieGenre1': tf.keras.layers.Input(name='movieGenre1', shape=(), dtype='string'),
-    'movieGenre2': tf.keras.layers.Input(name='movieGenre2', shape=(), dtype='string'),
-    'movieGenre3': tf.keras.layers.Input(name='movieGenre3', shape=(), dtype='string'),
+    'userCategory1': tf.keras.layers.Input(name='userCategory1', shape=(), dtype='string'),
+    'userCategory2': tf.keras.layers.Input(name='userCategory2', shape=(), dtype='string'),
+    'userCategory3': tf.keras.layers.Input(name='userCategory3', shape=(), dtype='string'),
+    'productCategory1': tf.keras.layers.Input(name='productCategory1', shape=(), dtype='string'),
+    'productCategory2': tf.keras.layers.Input(name='productCategory2', shape=(), dtype='string'),
+    'productCategory3': tf.keras.layers.Input(name='productCategory3', shape=(), dtype='string'),
 }
 
 # 电影ID嵌入特征
-movie_col = tf.feature_column.categorical_column_with_identity(key='productId', num_buckets=1001)
-movie_emb_col = tf.feature_column.embedding_column(movie_col, 10)
-movie_ind_col = tf.feature_column.indicator_column(movie_col)  # 电影ID指示列
+product_col = tf.feature_column.categorical_column_with_identity(key='productId', num_buckets=1000001)
+product_emb_col = tf.feature_column.embedding_column(product_col, 10)
+product_ind_col = tf.feature_column.indicator_column(product_col)  # 电影ID指示列
 
 # 用户ID嵌入特征
-user_col = tf.feature_column.categorical_column_with_identity(key='userId', num_buckets=30001)
+user_col = tf.feature_column.categorical_column_with_identity(key='userId', num_buckets=1000001)
 user_emb_col = tf.feature_column.embedding_column(user_col, 10)
 user_ind_col = tf.feature_column.indicator_column(user_col)  # 用户ID指示列
 
 # 类型特征词汇表
-genre_vocab = ['Film-Noir', 'Action', 'Adventure', 'Horror', 'Romance', 'War', 'Comedy', 'Western', 'Documentary',
-               'Sci-Fi', 'Drama', 'Thriller',
-               'Crime', 'Fantasy', 'Animation', 'IMAX', 'Mystery', 'Children', 'Musical']
+genre_vocab = ["青春文学","厨房/餐具","男士洁面","电脑/办公","化妆水/爽肤水","保温杯/保温壶","音像","U盘","存储卡","生活类图书","网卡","收纳","考试","工具书","工艺饰品","少儿","成功/励志","少儿/教育图书","杯具/水壶","家居生活","人文社科类图书","厨房电器","文学类","传记","手表","纸尿裤/拉拉裤/纸尿片","移动硬盘","外设产品","面部护理","台灯","睫毛膏","灯具","政治/军事","经管类图书","钟表/首饰/眼镜/礼品","鼠标","小说","手机","育儿/早教","图书音像","耳机/耳麦","哲学/宗教","电纸书/电子阅览器","尿裤湿巾","手机通讯","沐浴露","家具/家装/建材","亲子/家教","手工/DIY","酸奶机","卡通","家用电器","加湿/除湿器","电动剃须刀","个人护理电器","电脑音箱","存储设备","外语","母婴/玩具","投资理财","生活电器","香水","男士乳液/面霜","网络设备","钟表","旅游/地图","有声读物","美妆个护","男士护肤","文学艺术","孕产/胎教","洁面","收纳整理","其它图书","手机/数码","身体护理","数码影音","彩妆","电吹风"]
 
 # 用户类型嵌入特征
-user_genre_col = tf.feature_column.categorical_column_with_vocabulary_list(key="userGenre1",
+user_genre_col = tf.feature_column.categorical_column_with_vocabulary_list(key="userCategory1",
                                                                            vocabulary_list=genre_vocab)
 user_genre_ind_col = tf.feature_column.indicator_column(user_genre_col)
 user_genre_emb_col = tf.feature_column.embedding_column(user_genre_col, 10)
 
 # 物品类型嵌入特征
-item_genre_col = tf.feature_column.categorical_column_with_vocabulary_list(key="movieGenre1",
+item_genre_col = tf.feature_column.categorical_column_with_vocabulary_list(key="productCategory1",
                                                                            vocabulary_list=genre_vocab)
 item_genre_ind_col = tf.feature_column.indicator_column(item_genre_col)
 item_genre_emb_col = tf.feature_column.embedding_column(item_genre_col, 10)
 
 # FM 一阶类别特征
-cat_columns = [movie_ind_col, user_ind_col, user_genre_ind_col, item_genre_ind_col]
+cat_columns = [product_ind_col, user_ind_col, user_genre_ind_col, item_genre_ind_col]
 
 # 深度模型特征
-deep_columns = [tf.feature_column.numeric_column('releaseYear'),
-                tf.feature_column.numeric_column('movieRatingCount'),
-                tf.feature_column.numeric_column('movieAvgRating'),
-                tf.feature_column.numeric_column('movieRatingStddev'),
+deep_columns = [tf.feature_column.numeric_column('productRatingCount'),
+                tf.feature_column.numeric_column('productAvgRating'),
+                tf.feature_column.numeric_column('productRatingStddev'),
                 tf.feature_column.numeric_column('userRatingCount'),
                 tf.feature_column.numeric_column('userAvgRating'),
                 tf.feature_column.numeric_column('userRatingStddev')]
@@ -104,7 +96,7 @@ first_order_feature = tf.keras.layers.Add()([first_order_cat_feature, first_orde
 
 # 二阶类别特征嵌入
 second_order_cat_columns_emb = [tf.keras.layers.DenseFeatures([item_genre_emb_col])(inputs),
-                                tf.keras.layers.DenseFeatures([movie_emb_col])(inputs),
+                                tf.keras.layers.DenseFeatures([product_emb_col])(inputs),
                                 tf.keras.layers.DenseFeatures([user_genre_emb_col])(inputs),
                                 tf.keras.layers.DenseFeatures([user_emb_col])(inputs)
                                 ]
