@@ -32,6 +32,7 @@ public class DataManager {
         this.productMap = new HashMap<>();
         this.userMap = new HashMap<>();
         this.categoryReverseIndexMap = new HashMap<>();
+        this.tagReverseIndexMap = new HashMap<>();
         instance = this;
     }
 
@@ -75,7 +76,7 @@ public class DataManager {
                     Product product = new Product();
                     product.setProductId(Integer.parseInt(productData[0].trim())); // 解析产品ID
                     product.setTitle(productData[1].trim()); // 解析产品名称
-                    String genres = productData[2];
+                    String genres = productData[5];
                     if (!genres.trim().isEmpty()){
                         String[] genreArray = genres.split("\\|");
                         for (String genre : genreArray){
@@ -263,8 +264,8 @@ public class DataManager {
 
     // 将电影添加到类型反向索引中
     private void addProduct2CategoryIndex(String category, Product product) {
-        if (!this.tagReverseIndexMap.containsKey(category)) {
-            this.tagReverseIndexMap.put(category, new ArrayList<>());
+        if (!this.categoryReverseIndexMap.containsKey(category)) {
+            this.categoryReverseIndexMap.put(category, new ArrayList<>());
         }
         this.categoryReverseIndexMap.get(category).add(product);
     }

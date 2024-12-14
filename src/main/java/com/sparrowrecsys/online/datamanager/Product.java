@@ -49,6 +49,7 @@ public class Product{
         ratingNumber = 0;
         averageRating = 0;
         this.categories = new ArrayList<>();
+        this.tags = new ArrayList<>();
         this.ratings = new ArrayList<>();
         this.topRatings = new LinkedList<>();
         this.emb = null;

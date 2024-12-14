@@ -1,22 +1,21 @@
 package com.sparrowrecsys.online.datamanager;
-
 /**
  * Rating 类，包含从movielens的ratings.csv加载的属性
  */
 public class Rating {
-    int movieId; // 电影ID
+    int productId; // 电影ID
     int userId; // 用户ID
     float score; // 评分
     long timestamp; // 时间戳
 
     // 获取电影ID
-    public int getMovieId() {
-        return movieId;
+    public int getProductId() {
+        return productId;
     }
 
     // 设置电影ID
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     // 获取用户ID
