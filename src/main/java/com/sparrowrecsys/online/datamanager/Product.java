@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * Movie 类，包含从movielens的movies.csv加载的属性和其他高级数据，如平均评分、嵌入向量等。
  */
+/**测试===**/
 public class Product{
     int productId; // 电影ID
     String title; // 电影标题
