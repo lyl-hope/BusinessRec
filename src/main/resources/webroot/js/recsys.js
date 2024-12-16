@@ -17,7 +17,7 @@
                          <a uisref="base.movie" href="./movie.html?movieId='+movieId+'">\
                          <span>\
                            <div class="poster">\
-                            <img src="./posters/' + movieId + '.jpg" />\
+                            <img src="./posters/' + '1' + '.jpg" />\
                            </div>\
                            </span>\
                            </a>\
