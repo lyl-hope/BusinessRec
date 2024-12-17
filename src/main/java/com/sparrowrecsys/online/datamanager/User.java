@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sparrowrecsys.online.model.Embedding;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedList;
-import java.util.Deque;
+import java.util.*;
 
 /**
  * User 类，包含从 movielens 的 ratings.csv 加载的属性
@@ -28,6 +24,7 @@ public class User {
     String userCategory1=""; // 第一种高评分种类
     String userCategory2=""; // 第二种高评分种类
     String userCategory3=""; // 第三种高评分种类
+    int userRatedProduct1;
     // 用户的嵌入向量
     @JsonIgnore
     Embedding emb;
@@ -35,8 +32,8 @@ public class User {
     // 用户特征映射
     @JsonIgnore
     Map<String, String> userFeatures;
-    // 保存最近3个高评分种类
-    Deque<String> recentHighCategories = new LinkedList<>();
+    PriorityQueue<Rating> recentHighRatings; // 按时间戳排序的评分队列
+    Set<String> recentHighCategories; // 保存最近高评分的种类
     // 构造函数，初始化默认值
     public User() {
         stddevRating =0;
@@ -44,7 +41,8 @@ public class User {
         this.ratings = new ArrayList<>();
         this.emb = null;
         this.userFeatures = null;
-
+        this.recentHighRatings = new PriorityQueue<>((r1, r2) -> Long.compare(r2.getTimestamp(), r1.getTimestamp()));
+        this.recentHighCategories = new LinkedHashSet<>();
     }
 
     // 获取用户ID
@@ -77,7 +75,7 @@ public class User {
         ratingCount++;
         averageRating += delta / ratingCount;
 
-        // 更新M2并计算标准差
+        // 更新 M2 并计算标准差
         M2 += delta * (newScore - averageRating);
         if (ratingCount > 1) {
             stddevRating = Math.sqrt(M2 / ratingCount);
@@ -93,25 +91,35 @@ public class User {
             lowestRating = newScore;
         }
 
-        // 更新最近高评分种类
-        if (newScore > 3.5 && product.getCategories() != null && !product.getCategories().isEmpty()) {
-            String category = product.getCategories().get(0); // 取第一个类别
-            updateRecentHighCategories(category);
-        }
-    }
-    private void updateRecentHighCategories(String category) {
-        if (!recentHighCategories.contains(category)) {
-            if (recentHighCategories.size() == 3) {
-                recentHighCategories.removeFirst();
-            }
-            recentHighCategories.addLast(category);
+        // 如果评分 > 3.5，更新最近的高评分产品和种类
+        if (newScore > 3.5) {
+            recentHighRatings.offer(rating);
+            updateRecentHighCategories(product);
+            userRatedProduct1 = rating.getProductId(); // 最近评分 >3.5 的 productId
         }
 
-        // 更新 userCategory1, userCategory2, userCategory3
-        List<String> categories = new ArrayList<>(recentHighCategories);
-        userCategory1 = categories.size() > 0 ? categories.get(0) : null;
-        userCategory2 = categories.size() > 1 ? categories.get(1) : null;
-        userCategory3 = categories.size() > 2 ? categories.get(2) : null;
+        // 保持队列大小，最多保留最近3个评分
+        while (recentHighRatings.size() > 3) {
+            recentHighRatings.poll();
+        }
+    }
+    private void updateRecentHighCategories(Product product) {
+        if (product.getCategories() != null && !product.getCategories().isEmpty()) {
+            String category = product.getCategories().get(0); // 取第一个类别
+            if (!recentHighCategories.contains(category)) {
+                recentHighCategories.add(category);
+            }
+
+            // 维护最近3个高评分种类
+            List<String> categories = new ArrayList<>(recentHighCategories);
+            if (categories.size() > 3) {
+                categories = categories.subList(categories.size() - 3, categories.size());
+            }
+
+            userCategory1 = categories.size() > 0 ? categories.get(0) : null;
+            userCategory2 = categories.size() > 1 ? categories.get(1) : null;
+            userCategory3 = categories.size() > 2 ? categories.get(2) : null;
+        }
     }
     public double getStddevRating() {
         return stddevRating;
@@ -127,6 +135,9 @@ public class User {
 
     public String getUserCategory3() {
         return userCategory3;
+    }
+    public Integer getUserRatedProduct1() {
+        return userRatedProduct1;
     }
     // 获取平均评分
     public double getAverageRating() {
