@@ -108,14 +108,18 @@
 <script type="text/javascript">
 
 var getUrl = window.location;
-var baseUrl = getUrl .protocol + "//" + getUrl.host + "/"
+var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
+var size = 100;
+var m = Math.ceil(size / 8); // 使用 Math.ceil 向上取整
 
-addGenreRow('#recPage', 'Action', 'action-collection', 8, baseUrl);
-addGenreRow('#recPage', 'Romance', 'romance-collection', 8, baseUrl);
-addGenreRow('#recPage', 'Thriller', 'thriller-collection', 8, baseUrl);
-addGenreRow('#recPage', 'Comedy', 'comedy-collection', 8, baseUrl);
-addGenreRow('#recPage', 'Drama', 'drama-collection', 8, baseUrl);
-addGenreRow('#recPage', 'Adventure', 'adventure-collection', 8, baseUrl);
+for(var i = m; 0 <= i ; i--){
+     addGenreRow('#recPage', '图书音像', '图书音像-collection-' + i, size , baseUrl,i*8,i*8+7);
+ }
+// addGenreRow('#recPage', '图书音像', '图书音像-collection-3', size , baseUrl,24,31);
+// addGenreRow('#recPage', '图书音像', '图书音像-collection-2', size , baseUrl,16,23);
+// addGenreRow('#recPage', '图书音像', '图书音像-collection-1', size , baseUrl,8,15);
+// addGenreRow('#recPage', '图书音像', '图书音像-collection-0', size , baseUrl,0,7);
+// addGenreRow('#recPage', '美妆个护', '图书音像-collectiodn', size , baseUrl,0,7);
 
 </script>
 </html>

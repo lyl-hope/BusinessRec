@@ -97,13 +97,15 @@ function addRowFrameWithoutLink(pageId, rowName, rowId, baseUrl) {
      $(pageId).prepend(divstr);
 };
 
-function addGenreRow(pageId, rowName, rowId, size, baseUrl) {
-    addRowFrame(pageId, rowName, rowId, baseUrl);
-    $.getJSON(baseUrl + "getrecommendation?genre="+rowName+"&size="+size+"&sortby=rating", function(result){
-        $.each(result, function(i, movie){
-          appendMovie2Row(rowId, movie.title, movie.movieId, movie.releaseYear, movie.averageRating.toPrecision(2), movie.ratingNumber, movie.genres,baseUrl);
-        });
-    });
+function addGenreRow(pageId, rowName, rowId, size, baseUrl,l,r) {
+
+            addRowFrame(pageId, rowName, rowId, baseUrl);
+            $.getJSON(baseUrl + "getrecommendation?category="+rowName+"&size="+size+"&sortby=rating", function(result){
+                $.each(result, function(i, movie){
+                    if(l <= i && i <= r)
+                    appendMovie2Row(rowId, movie.title, movie.productId, 0, movie.averageRating.toPrecision(2), movie.ratingNumber, movie.categories,baseUrl);
+                });
+            });
 };
 
 function addRelatedMovies(pageId, containerId, movieId, baseUrl){
