@@ -254,7 +254,7 @@ public class DataManager {
                         this.userMap.put(user.getUserId(), user);
                     }
                     // 将评分添加到用户对象中
-                    this.userMap.get(rating.getUserId()).addRating(rating);
+                    this.userMap.get(rating.getUserId()).addRating(rating,product);
                 }
             }
         }

@@ -7,6 +7,8 @@ import com.sparrowrecsys.online.model.Embedding;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedList;
+import java.util.Deque;
 
 /**
  * User 类，包含从 movielens 的 ratings.csv 加载的属性
@@ -20,7 +22,12 @@ public class User {
 
     @JsonSerialize(using = RatingListSerializer.class)
     List<Rating> ratings; // 用户的评分列表
+    double stddevRating; // 评分标准差
+    double M2 ; // 用于增量计算标准差的变量
 
+    String userCategory1=""; // 第一种高评分种类
+    String userCategory2=""; // 第二种高评分种类
+    String userCategory3=""; // 第三种高评分种类
     // 用户的嵌入向量
     @JsonIgnore
     Embedding emb;
@@ -28,12 +35,16 @@ public class User {
     // 用户特征映射
     @JsonIgnore
     Map<String, String> userFeatures;
-
+    // 保存最近3个高评分种类
+    Deque<String> recentHighCategories = new LinkedList<>();
     // 构造函数，初始化默认值
     public User() {
+        stddevRating =0;
+        M2 =0;
         this.ratings = new ArrayList<>();
         this.emb = null;
         this.userFeatures = null;
+
     }
 
     // 获取用户ID
@@ -57,20 +68,66 @@ public class User {
     }
 
     // 添加评分并更新平均评分、最高评分、最低评分和评分数量
-    public void addRating(Rating rating) {
+    public void addRating(Rating rating,Product product) {
+        double newScore = rating.getScore();
         this.ratings.add(rating);
-        this.averageRating = (this.averageRating * ratingCount + rating.getScore()) / (ratingCount + 1);
-        if (rating.getScore() > highestRating) {
-            highestRating = rating.getScore();
-        }
 
-        if (rating.getScore() < lowestRating) {
-            lowestRating = rating.getScore();
-        }
-
+        // 更新平均值
+        double delta = newScore - averageRating;
         ratingCount++;
+        averageRating += delta / ratingCount;
+
+        // 更新M2并计算标准差
+        M2 += delta * (newScore - averageRating);
+        if (ratingCount > 1) {
+            stddevRating = Math.sqrt(M2 / ratingCount);
+        } else {
+            stddevRating = 0;
+        }
+
+        // 更新最高评分和最低评分
+        if (newScore > highestRating) {
+            highestRating = newScore;
+        }
+        if (newScore < lowestRating) {
+            lowestRating = newScore;
+        }
+
+        // 更新最近高评分种类
+        if (newScore > 3.5 && product.getCategories() != null && !product.getCategories().isEmpty()) {
+            String category = product.getCategories().get(0); // 取第一个类别
+            updateRecentHighCategories(category);
+        }
+    }
+    private void updateRecentHighCategories(String category) {
+        if (!recentHighCategories.contains(category)) {
+            if (recentHighCategories.size() == 3) {
+                recentHighCategories.removeFirst();
+            }
+            recentHighCategories.addLast(category);
+        }
+
+        // 更新 userCategory1, userCategory2, userCategory3
+        List<String> categories = new ArrayList<>(recentHighCategories);
+        userCategory1 = categories.size() > 0 ? categories.get(0) : null;
+        userCategory2 = categories.size() > 1 ? categories.get(1) : null;
+        userCategory3 = categories.size() > 2 ? categories.get(2) : null;
+    }
+    public double getStddevRating() {
+        return stddevRating;
     }
 
+    public String getUserCategory1() {
+        return userCategory1;
+    }
+
+    public String getUserCategory2() {
+        return userCategory2;
+    }
+
+    public String getUserCategory3() {
+        return userCategory3;
+    }
     // 获取平均评分
     public double getAverageRating() {
         return averageRating;
