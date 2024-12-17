@@ -31,7 +31,7 @@ public class RecForYouProcess {
         if (null == user){
             return new ArrayList<>();
         }
-        final int CANDIDATE_SIZE = 800;
+        final int CANDIDATE_SIZE = 100;
         // 获取候选电影列表
         List<Product> candidates = DataManager.getInstance().getProducts(CANDIDATE_SIZE, "rating");
 
@@ -154,7 +154,8 @@ public class RecForYouProcess {
 
         // 构建请求的JSON对象
         JSONArray instances = new JSONArray();
-        for (Product m : candidates){
+        //JSONArray instances = new JSONArray();
+        for (Product m : candidates) {
             JSONObject instance = new JSONObject();
             instance.put("productAvgRating", m.getAverageRating());
             instance.put("productRatingStddev", m.getStddevRating());
@@ -168,19 +169,24 @@ public class RecForYouProcess {
             instance.put("userCategory1", user.getUserCategory1());
             instance.put("userCategory2", user.getUserCategory2());
             instance.put("userCategory3", user.getUserCategory3());
-            instance.put("productCategory1", m.getCategories().get(0));
-            instance.put("productCategory2", m.getCategories().get(1));
-            instance.put("productCategory3", m.getCategories().get(2));
+
+            // 防止访问越界，确保每个类别字段的正确性
+            instance.put("productCategory1", m.getCategories().size() > 0 ? m.getCategories().get(0) : "");
+            instance.put("productCategory2", m.getCategories().size() > 1 ? m.getCategories().get(1) : "");
+            instance.put("productCategory3", m.getCategories().size() > 2 ? m.getCategories().get(2) : "");
+
             instances.put(instance);
         }
 
         JSONObject instancesRoot = new JSONObject();
         instancesRoot.put("instances", instances);
-
+// 为了确保请求正确，加入 signature_name
+        instancesRoot.put("signature_name", "serving_default");
         // 需要确认TensorFlow Serving的端点
         String predictionScores = asyncSinglePostRequest("http://localhost:8501/v1/models/finalmodel:predict", instancesRoot.toString());
         System.out.println("send user" + user.getUserId() + " request to tf serving.");
-
+        //System.out.println(instancesRoot.toString());
+        //System.out.println(predictionScores);
         // 解析预测结果
         JSONObject predictionsObject = new JSONObject(predictionScores);
         JSONArray scores = predictionsObject.getJSONArray("predictions");
