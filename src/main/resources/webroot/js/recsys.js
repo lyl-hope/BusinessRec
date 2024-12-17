@@ -1,7 +1,7 @@
 
 
  function appendMovie2Row(rowId, movieName, movieId, year, rating, rateNumber, genres, baseUrl) {
-
+    var selector = "#" + rowId.replace(/\//g, '\\/');//正则表达式，告诉 jQuery 将rowId中的 / 视为普通字符而不是选择器的一部分。
     var genresStr = "";
     $.each(genres, function(i, genre){
         genresStr += ('<div class="genre"><a href="'+baseUrl+'collection.html?type=genre&value='+genre+'"><b>'+genre+'</b></a></div>');
@@ -61,7 +61,7 @@
                      </movie-card-md1>\
                     </movie-card-smart>\
                    </div>';
-    $('#'+rowId).append(divstr);
+     $(selector).append(divstr);
 };
 
 
@@ -100,6 +100,7 @@ function addRowFrameWithoutLink(pageId, rowName, rowId, baseUrl) {
 function addGenreRow(pageId, rowName, rowId, size, baseUrl,l,r) {
 
             addRowFrame(pageId, rowName, rowId, baseUrl);
+            //http://localhost:6010/getrecommendation?category=育儿/早教&size=8&sortby=rating
             $.getJSON(baseUrl + "getrecommendation?category="+rowName+"&size="+size+"&sortby=rating", function(result){
                 $.each(result, function(i, movie){
                     if(l <= i && i <= r)
@@ -107,6 +108,21 @@ function addGenreRow(pageId, rowName, rowId, size, baseUrl,l,r) {
                 });
             });
 };
+
+function addAllByCategory(category){
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
+    var size;
+    var m; // 使用 Math.ceil 向上取整
+    //http://localhost:6010/getProductCountByCategory?category=%E8%82%B2%E5%84%BF/%E6%97%A9%E6%95%99
+    $.getJSON(baseUrl + "getProductCountByCategory?category=" + category, function(result) {
+        size = result.count;
+        m = Math.ceil(size / 8);
+        for(var i = m - 1; 0 <= i ; i--){
+            addGenreRow('#recPage', category, category + '-collection-' + i, size , baseUrl,i*8,i*8+7);
+        }
+    });
+}
 
 function addRelatedMovies(pageId, containerId, movieId, baseUrl){
 

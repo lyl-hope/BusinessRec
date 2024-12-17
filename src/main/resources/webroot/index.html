@@ -107,14 +107,52 @@
 
 <script type="text/javascript">
 
-var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
-var size = 100;
-var m = Math.ceil(size / 8); // 使用 Math.ceil 向上取整
+    // 电子产品
+    addAllByCategory('电子产品');
+    addAllByCategory('外设产品');
+    addAllByCategory('存储设备');
+    addAllByCategory('家用电器');
+    addAllByCategory('手机通讯');
 
-for(var i = m; 0 <= i ; i--){
-     addGenreRow('#recPage', '图书音像', '图书音像-collection-' + i, size , baseUrl,i*8,i*8+7);
- }
+    // 美妆个护
+    addAllByCategory('美妆个护');
+    addAllByCategory('彩妆');
+    addAllByCategory('面部护理');
+    addAllByCategory('身体护理');
+
+    // 图书音像
+    addAllByCategory('图书音像');
+    addAllByCategory('青春文学');
+    addAllByCategory('经管类图书');
+    addAllByCategory('政治/军事');
+    addAllByCategory('旅游/地图');
+    addAllByCategory("育儿/早教");
+    addAllByCategory('哲学/宗教');
+    addAllByCategory('文学艺术');
+    addAllByCategory('少儿/教育图书');
+
+    // 家居生活
+    addAllByCategory('家居生活');
+    addAllByCategory('杯具/水壶');
+    addAllByCategory('保温杯/保温壶');
+    addAllByCategory('收纳整理');
+
+    // 母婴/玩具
+    addAllByCategory('母婴/玩具');
+    addAllByCategory('尿裤湿巾');
+
+    // 钟表/首饰/眼镜/礼品
+    addAllByCategory('钟表/首饰/眼镜/礼品');
+    addAllByCategory('钟表');
+
+    // 工艺饰品
+    addAllByCategory('工艺饰品');
+    addAllByCategory('家具/家装/建材');
+
+
+
+
+
 // addGenreRow('#recPage', '图书音像', '图书音像-collection-3', size , baseUrl,24,31);
 // addGenreRow('#recPage', '图书音像', '图书音像-collection-2', size , baseUrl,16,23);
 // addGenreRow('#recPage', '图书音像', '图书音像-collection-1', size , baseUrl,8,15);
