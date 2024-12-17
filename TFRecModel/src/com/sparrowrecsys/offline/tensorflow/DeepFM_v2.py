@@ -7,12 +7,15 @@ import tensorflow as tf
 """
 
 # 训练样本路径，请更改为你的本地路径
-training_samples_file_path = tf.keras.utils.get_file(r"E:\处理出来的csv数据\trainingSamples.csv",
-                                                     r"file:///E:\处理出来的csv数据\/trainingSamples.csv")
-# 测试样本路径，请更改为你的本地路径
-test_samples_file_path = tf.keras.utils.get_file(r"E:\处理出来的csv数据\testSamples.csv",
-                                                 r"file:///E:\处理出来的csv数据\.csv")
+#666
+training_samples_file_path = tf.keras.utils.get_file('trainingSamples.csv',
+                                                     origin='file:///E:/处理出来的csv数据/trainingSamples.csv',
+                                                     cache_dir='E:/处理出来的csv数据')
 
+# 测试样本路径，请更改为你的本地路径
+test_samples_file_path = tf.keras.utils.get_file('testSamples.csv',
+                                                 origin='file:///E:/处理出来的csv数据/testSamples.csv',
+                                                 cache_dir='E:/处理出来的csv数据')
 # 加载样本为 tf 数据集
 def get_dataset(file_path):
     dataset = tf.data.experimental.make_csv_dataset(
@@ -61,7 +64,7 @@ user_ind_col = tf.feature_column.indicator_column(user_col)  # 用户ID指示列
 
 # 类型特征词汇表
 genre_vocab = ["青春文学","厨房/餐具","男士洁面","电脑/办公","化妆水/爽肤水","保温杯/保温壶","音像","U盘","存储卡","生活类图书","网卡","收纳","考试","工具书","工艺饰品","少儿","成功/励志","少儿/教育图书","杯具/水壶","家居生活","人文社科类图书","厨房电器","文学类","传记","手表","纸尿裤/拉拉裤/纸尿片","移动硬盘","外设产品","面部护理","台灯","睫毛膏","灯具","政治/军事","经管类图书","钟表/首饰/眼镜/礼品","鼠标","小说","手机","育儿/早教","图书音像","耳机/耳麦","哲学/宗教","电纸书/电子阅览器","尿裤湿巾","手机通讯","沐浴露","家具/家装/建材","亲子/家教","手工/DIY","酸奶机","卡通","家用电器","加湿/除湿器","电动剃须刀","个人护理电器","电脑音箱","存储设备","外语","母婴/玩具","投资理财","生活电器","香水","男士乳液/面霜","网络设备","钟表","旅游/地图","有声读物","美妆个护","男士护肤","文学艺术","孕产/胎教","洁面","收纳整理","其它图书","手机/数码","身体护理","数码影音","彩妆","电吹风"]
-
+#666
 # 用户类型嵌入特征
 user_genre_col = tf.feature_column.categorical_column_with_vocabulary_list(key="userCategory1",
                                                                            vocabulary_list=genre_vocab)
@@ -170,3 +173,14 @@ for prediction, goodRating in zip(predictions[:12], list(test_dataset)[0][1][:12
     print("Predicted good rating: {:.2%}".format(prediction[0]),
           " | Actual rating label: ",
           ("Good Rating" if bool(goodRating) else "Bad Rating"))
+
+# 保存模型
+tf.keras.models.save_model(
+    model,
+    r"E:\group_homework\BusinessRec\src\main\resources\webroot\modeldata\finalmodel",
+    overwrite=True,
+    include_optimizer=True,
+    save_format=None,
+    signatures=None,
+    options=None
+)

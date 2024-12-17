@@ -85,6 +85,8 @@ public class RecForYouProcess {
                 // 调用神经协同过滤模型进行排序
                 callNeuralCFTFServing(user, candidates, candidateScoreMap);
                 break;
+            case "tf_serving_mode":
+                callTFserving(user,candidates,candidateScoreMap);
             default:
                 // 默认按候选集中的顺序排序
                 for (int i = 0 ; i < candidates.size(); i++){
@@ -145,4 +147,52 @@ public class RecForYouProcess {
             candidateScoreMap.put(candidates.get(i), scores.getJSONArray(i).getDouble(0));
         }
     }
+    public static void callTFserving(User user, List<Product> candidates, HashMap<Product, Double> candidateScoreMap){
+        if (null == user || null == candidates || candidates.size() == 0){
+            return;
+        }
+
+        // 构建请求的JSON对象
+        JSONArray instances = new JSONArray();
+        for (Product m : candidates){
+            JSONObject instance = new JSONObject();
+            instance.put("productAvgRating", m.getAverageRating());
+            instance.put("productRatingStddev", m.getStddevRating());
+            instance.put("productRatingCount", m.getRatingNumber());
+            instance.put("userAvgRating", user.getAverageRating());
+            instance.put("userRatingStddev", user.getStddevRating());
+            instance.put("userRatingCount", user.getRatingCount());
+            instance.put("productId", m.getProductId());
+            instance.put("userId", user.getUserId());
+            instance.put("userRatedProduct1", user.getUserRatedProduct1());
+            instance.put("userCategory1", user.getUserCategory1());
+            instance.put("userCategory2", user.getUserCategory2());
+            instance.put("userCategory3", user.getUserCategory3());
+            instance.put("productCategory1", m.getCategories().get(0));
+            instance.put("productCategory2", m.getCategories().get(1));
+            instance.put("productCategory3", m.getCategories().get(2));
+            instances.put(instance);
+        }
+
+        JSONObject instancesRoot = new JSONObject();
+        instancesRoot.put("instances", instances);
+
+        // 需要确认TensorFlow Serving的端点
+        String predictionScores = asyncSinglePostRequest("http://localhost:8501/v1/models/finalmodel:predict", instancesRoot.toString());
+        System.out.println("send user" + user.getUserId() + " request to tf serving.");
+
+        // 解析预测结果
+        JSONObject predictionsObject = new JSONObject(predictionScores);
+        JSONArray scores = predictionsObject.getJSONArray("predictions");
+        for (int i = 0 ; i < candidates.size(); i++){
+            candidateScoreMap.put(candidates.get(i), scores.getJSONArray(i).getDouble(0));
+        }
+    }
 }
+
+/**
+ * 调用TensorFlow Serving获取神经协同过滤模型的推理结果
+ * @param user 输入的用户
+ * @param candidates 候选电影列表
+ * @param candidateScoreMap 保存预测得分的映射
+ */

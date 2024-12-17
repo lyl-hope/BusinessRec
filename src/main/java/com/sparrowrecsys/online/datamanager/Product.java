@@ -25,7 +25,10 @@ public class Product{
     int ratingNumber;
     // 平均评分
     double averageRating;
-
+    // 评分标准差
+    double stddevRating;
+    // M2：方差更新的中间变量
+    double M2;
     // 电影的嵌入向量
     @JsonIgnore
     Embedding emb;
@@ -49,6 +52,8 @@ public class Product{
     public Product() {
         ratingNumber = 0;
         averageRating = 0;
+        stddevRating=0;
+        M2=0;
         this.categories = new ArrayList<>();
         this.tags = new ArrayList<>();
         this.ratings = new ArrayList<>();
@@ -122,8 +127,24 @@ public class Product{
 
     // 添加评分并更新平均评分和评分数量
     public void addRating(Rating rating) {
-        averageRating = (averageRating * ratingNumber + rating.getScore()) / (ratingNumber+1);
+        double newScore = rating.getScore();
         ratingNumber++;
+
+        // 计算新的平均值
+        double delta = newScore - averageRating;
+        averageRating += delta / ratingNumber;
+
+        // 更新M2
+        M2 += delta * (newScore - averageRating);
+
+        // 更新标准差
+        if (ratingNumber > 1) {
+            stddevRating = Math.sqrt(M2 / ratingNumber);
+        } else {
+            stddevRating = 0; // 只有一个评分时标准差为0
+        }
+
+        // 更新评分列表
         this.ratings.add(rating);
         addTopRating(rating);
     }
@@ -190,6 +211,11 @@ public class Product{
     // 获取电影特征映射
     public Map<String, String> getProductFeatures() {
         return productFeatures;
+    }
+
+    // 获取评分标准差
+    public double getStddevRating() {
+        return stddevRating;
     }
 
     // 设置电影特征映射
