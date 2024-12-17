@@ -21,9 +21,9 @@ public class User {
     double stddevRating; // 评分标准差
     double M2 ; // 用于增量计算标准差的变量
 
-    String userCategory1=""; // 第一种高评分种类
-    String userCategory2=""; // 第二种高评分种类
-    String userCategory3=""; // 第三种高评分种类
+    String userCategory1; // 第一种高评分种类
+    String userCategory2; // 第二种高评分种类
+    String userCategory3; // 第三种高评分种类
     int userRatedProduct1;
     // 用户的嵌入向量
     @JsonIgnore
@@ -36,6 +36,9 @@ public class User {
     Set<String> recentHighCategories; // 保存最近高评分的种类
     // 构造函数，初始化默认值
     public User() {
+        userCategory1="";
+        userCategory2="";
+        userCategory3="";
         stddevRating =0;
         M2 =0;
         this.ratings = new ArrayList<>();
@@ -116,9 +119,9 @@ public class User {
                 categories = categories.subList(categories.size() - 3, categories.size());
             }
 
-            userCategory1 = categories.size() > 0 ? categories.get(0) : null;
-            userCategory2 = categories.size() > 1 ? categories.get(1) : null;
-            userCategory3 = categories.size() > 2 ? categories.get(2) : null;
+            userCategory1 = categories.size() > 0 ? categories.get(0) : "";
+            userCategory2 = categories.size() > 1 ? categories.get(1) : "";
+            userCategory3 = categories.size() > 2 ? categories.get(2) : "";
         }
     }
     public double getStddevRating() {

@@ -1,12 +1,16 @@
 import requests
 import json
 
+
 def send_request():
     # 创建请求数据
-    instances = [
+    instances = [{"userAvgRating": 3.4, "productId": 459600, "userRatingStddev": 1.4966629547095764, "productCategory3": "图书音像", "productCategory2": "生活类图书", "productCategory1": "育儿/早教", "userCategory2": "文学艺术", "userId": 4867, "userCategory1": "传记", "productAvgRating": 4.810344827586206, "productRatingStddev": 0.5205069329997749, "productRatingCount": 290, "userRatingCount": 5, "userRatedProduct1": 425715}, 
+    
+        
         {
-            "userId": 4867,
+            
             "userAvgRating": 4.2,
+            "userId": 4867,
             "userCategory1": "外设产品",
             "userCategory2": "鼠标",
             "userCategory3": "家用电器",
@@ -54,6 +58,7 @@ def send_request():
 
     # 打印响应内容
     print(response.json())
+
 
 if __name__ == "__main__":
     send_request()
