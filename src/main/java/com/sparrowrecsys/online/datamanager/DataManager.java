@@ -326,7 +326,14 @@ public class DataManager {
         }
         return null; // 如果类别为空，返回 null
     }
-
+    public int getProductsSizeByCategory(String category) {
+        if (null != category) {
+            // 从 categoryReverseIndexMap 获取指定类别的产品列表
+            List<Product> products = new ArrayList<>(this.categoryReverseIndexMap.getOrDefault(category, new ArrayList<>()));
+            return products.size(); // 否则返回完整列表
+        }
+        return 0; // 如果类别为空，返回 null
+    }
     // 获取前N部电影，并按sortBy方法排序
 //    public List<Movie> getMovies(int size, String sortBy){
 //        List<Movie> movies = new ArrayList<>(movieMap.values());
