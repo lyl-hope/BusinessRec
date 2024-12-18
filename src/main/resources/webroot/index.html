@@ -16,8 +16,36 @@
     <script src="./js/recsys.js?v=1.19"></script>
 
     <style>
-        /* 顶部导航栏的样式 */
 
+        .poster img {
+            transition: transform 0.3s ease; /* 添加过渡动画 */
+        }
+
+        .poster img:hover {
+            transform: scale(0.9); /* 鼠标悬停时缩小到 0.9 倍 */
+        }
+
+        .movie-row .movie-row-bounds .movie-row-scrollable {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            overflow-x: hidden;
+            transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
+        }
+        .movie-row .movie-row-bounds .movie-row-item {
+
+            margin-bottom: 15px; /* 每行的底部间隔 20px */
+            background-color: #f3f3f3;
+            text-align: center;
+            padding: 0px;
+            border: 0px solid #ddd;
+            border-radius: 0px;
+        }
+
+        .movie-card-md1{
+            margin:0 5px 15px 0
+        }
+        /* 顶部导航栏的样式 */
 
         .top-nav {
             display: flex;
@@ -35,7 +63,9 @@
             font-weight: bold;
             font-size: 16px;
         }
-
+        .nav-item a{
+            color: white;
+        }
         .nav-item:hover {
             background-color: #0056b3;
             border-radius: 5px;
@@ -67,17 +97,103 @@
         .nav-item:hover .dropdown-menu {
             display: block;
         }
+        .carousel-container {
+            width: 60%;
+            height: 400px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 400px;
+            background-size: contain; /* 改为 contain，确保图片完整显示 */
+            background-position: center;
+            background-repeat: no-repeat; /* 确保图片不重复 */
+        }
+
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .carousel-arrow {
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .carousel-arrow:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .frontpage-description h2 {
+            font-size: 36px; /* 增大标题字体 */
+            font-family: 'Arial', sans-serif; /* 使用现代字体 */
+            font-weight: bold; /* 加粗标题 */
+            margin-bottom: 15px; /* 调整标题与段落之间的间距 */
+            color: #333; /* 深色文本以增加对比度 */
+            letter-spacing: 1px; /* 增加字母间距 */
+            text-align: center; /* 居中对齐标题 */
+        }
+
+        .frontpage-description p {
+            font-size: 20px; /* 增大段落字体 */
+            color: #666; /* 更柔和的颜色 */
+            line-height: 1.8; /* 增加行间距，使文字更舒适阅读 */
+            max-width: 800px; /* 限制段落最大宽度，避免行过长 */
+            margin: 0 auto; /* 将段落居中 */
+            text-align: center; /* 使段落文本两端对齐 */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 改变字体 */
+        }
+
+        .frontpage-description {
+            padding: 5px; /* 给容器添加内边距 */
+            background-color: #f9f9f9; /* 背景颜色更柔和 */
+            border-radius: 10px; /* 添加圆角 */
+
+            text-align: center; /* 整个容器内容居中 */
+        }
+
+        .frontpage-description h1{
+            text-align: center;
+            color: gray;
+            font-size: 30px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+
     </style>
 </head>
 <body>
 <div>
     <!-- 顶部导航栏 -->
     <nav class="top-nav">
+        <div class="nav-item">
+            <a href="#" onclick="event.preventDefault(); show_firstpage()" color="white">首页</a>
+        </div>
 
         <div class="nav-item">
             电子产品
             <div class="dropdown-menu">
-                <a href="#" onclick="event.preventDefault(); show('电子产品')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('外设产品');show('存储设备');show('家用电器');show('手机通讯')">全部</a>
                 <a href="#" onclick="event.preventDefault(); show('外设产品')">外设产品</a>
                 <a href="#" onclick="event.preventDefault(); show('存储设备')">存储设备</a>
                 <a href="#" onclick="event.preventDefault(); show('家用电器')">家用电器</a>
@@ -88,7 +204,7 @@
         <div class="nav-item">
             美妆个护
             <div class="dropdown-menu">
-                <a href="#" onclick="event.preventDefault(); show('美妆个护')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('彩妆');show('面部护理');show('身体护理')">全部</a>
                 <a href="#" onclick="event.preventDefault(); show('彩妆')">彩妆</a>
                 <a href="#" onclick="event.preventDefault(); show('面部护理')">面部护理</a>
                 <a href="#" onclick="event.preventDefault(); show('身体护理')">身体护理</a>
@@ -98,7 +214,7 @@
         <div class="nav-item">
             图书音像
             <div class="dropdown-menu">
-                <a href="#" onclick="event.preventDefault(); show('图书音像')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('青春文学');show('经管类图书');show('政治/军事');show('旅游/地图');show('育儿/早教');show('哲学/宗教');show('文学艺术');show('少儿/教育图书')">全部</a>
                 <a href="#" onclick="event.preventDefault(); show('青春文学')">青春文学</a>
                 <a href="#" onclick="event.preventDefault(); show('经管类图书')">经管类图书</a>
                 <a href="#" onclick="event.preventDefault(); show('政治/军事')">政治/军事</a>
@@ -113,7 +229,7 @@
         <div class="nav-item">
             家居生活
             <div class="dropdown-menu">
-                <a href="#" onclick="event.preventDefault(); show('家居生活')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('杯具/水壶');show('保温杯/保温壶');show('收纳整理')">全部</a>
                 <a href="#" onclick="event.preventDefault(); show('杯具/水壶')">杯具/水壶</a>
                 <a href="#" onclick="event.preventDefault(); show('保温杯/保温壶')">保温杯/保温壶</a>
                 <a href="#" onclick="event.preventDefault(); show('收纳整理')">收纳整理</a>
@@ -123,7 +239,7 @@
         <div class="nav-item">
             母婴/玩具
             <div class="dropdown-menu">
-                <a href="#" onclick="event.preventDefault(); show('母婴/玩具')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('尿裤湿巾')">全部</a>
                 <a href="#" onclick="event.preventDefault(); show('尿裤湿巾')">尿裤湿巾</a>
             </div>
         </div>
@@ -139,7 +255,7 @@
         <div class="nav-item">
             工艺饰品
             <div class="dropdown-menu">
-                <a href="#" onclick="event.preventDefault(); show('工艺饰品')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('工艺饰品');show('家具/家装/建材')">全部</a>
                 <a href="#" onclick="event.preventDefault(); show('家具/家装/建材')">家具/家装/建材</a>
             </div>
         </div>
@@ -148,7 +264,7 @@
 
     </nav>
 
-    <div class="frontpage-section-top">
+    <div class="frontpage-description">
         <h1>Welcome to Business RecSys</h1>
     </div>
 
@@ -156,6 +272,10 @@
     <div class="ml4-container" style="min-height: 920px;">
         <div id="main-container">
             <div class="frontpage" id="recPage">
+
+            </div>
+            <div class="frontpage" id="first">
+
             </div>
         </div>
     </div>
@@ -164,12 +284,59 @@
 
 
 <script type="text/javascript">
+    function updateCarousel() {
+        const slideWidth = slides[0].clientWidth;
+        const carouselSlides = document.getElementById('carousel-slides');
+        carouselSlides.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    }
 
     function show(category) {
         document.getElementById('recPage').innerHTML = '';
         console.log('加载类别:', category);
         addAllByCategory(category);
+        if(isVisible)
+            toggleVisibility();
     }
+    function show_firstpage(){
+        if(!isVisible)
+            toggleVisibility();
+        document.getElementById('recPage').innerHTML = '';
+    }
+
+    function toggleVisibility() {
+        const frontpage = document.getElementById('first');
+        if (isVisible) {
+            frontpage.style.display = 'none'; // 隐藏
+        } else {
+            frontpage.style.display = 'block'; // 显示
+        }
+        isVisible = !isVisible; // 反转显示状态
+    }
+
+    add_firstpage('#first');
+
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const totalSlides = 3;
+    let isVisible = true;
+
+
+    document.getElementById('next').addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+    });
+
+    document.getElementById('prev').addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    });
+    carouselInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalSlides; // 循环播放幻灯片
+        updateCarousel();
+    }, 3000); // 每3秒切换一次幻灯片
+
+
+
 </script>
 </body>
 </html>
