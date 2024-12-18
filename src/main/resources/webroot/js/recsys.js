@@ -41,7 +41,6 @@
                             </div>\
                            </ml4-rating-or-prediction>\
                           </div>\
-                          <p class="year">'+year+'</p>\
                          </div>\
                          <div class="below-fold">\
                           <div class="genre-list">\
@@ -110,6 +109,7 @@ function addGenreRow(pageId, rowName, rowId, size, baseUrl,l,r) {
 };
 
 function addAllByCategory(category){
+
     var getUrl = window.location;
     var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
     var size;

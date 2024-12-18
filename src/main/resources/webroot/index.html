@@ -1,163 +1,175 @@
 <!DOCTYPE html>
-<html class="no-js" xmlns="http://www.w3.org/1999/html">
+<html class="no-js" xmlns="http://www.w3.org/1999/html" lang="">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <!--<base href="/">-->
     <base href="."/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>Home | Sparrow RecSys</title>
+    <title>Home | Business RecSys</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="theme-color" content="#ffffff"/>
     <link type="text/plain" rel="author"/>
     <link href="./css/style.css" rel="stylesheet"/>
-    <link rel="shortcut icon" href="./resources/favicon.ico">
+    <link rel="shortcut icon" href="resources/favicon2.ico">
     <script src="./js/jquery-3.2.1.min.js"></script>
     <script src="./js/recsys.js?v=1.19"></script>
+
+    <style>
+        /* 顶部导航栏的样式 */
+
+
+        .top-nav {
+            display: flex;
+            background-color: #007bff;
+            padding: 10px 20px;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .nav-item:hover {
+            background-color: #0056b3;
+            border-radius: 5px;
+            color: lightskyblue;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
 </head>
-<body id="root">
+<body>
 <div>
-    <header class="base-compact-header">
-        <div class="ml4-container base-header-primary-container">
-            <div class="base-header-logo-container">
-                <span class="base-header-logo-main">
-                    <a href="."><img alt="Sparrow RecSys Logo" height="30px" src="./images/sparrowrecsyslogo.png"/></a>
-                </span>
-            </div>
-            <div class="base-header-search-container">
-                <form class="form-inline ng-pristine ng-valid ng-touched" novalidate="" role="form">
-                    <div class="input-group input-group-sm base-header-search-box">
-               <span class="twitter-typeahead" style="position: relative; display: inline-block;">
-                   <input class="form-control input-sm no-glow tt-input ng-pristine ng-valid ng-touched"
-                          id="omnisearch-typeahead" name="currentVal" type="text" spellcheck="false" dir="auto"
-                          aria-owns="omnisearch-typeahead_listbox" role="combobox"
-                          aria-readonly="true" aria-autocomplete="list"
-                          style="position: relative; vertical-align: top; background-color: transparent;"/>
-                </span>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm no-glow">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </form>
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+
+        <div class="nav-item">
+            电子产品
+            <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); show('电子产品')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('外设产品')">外设产品</a>
+                <a href="#" onclick="event.preventDefault(); show('存储设备')">存储设备</a>
+                <a href="#" onclick="event.preventDefault(); show('家用电器')">家用电器</a>
+                <a href="#" onclick="event.preventDefault(); show('手机通讯')">手机通讯</a>
             </div>
         </div>
-    </header>
-    <div class="base-compact-header-spacer"></div>
+
+        <div class="nav-item">
+            美妆个护
+            <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); show('美妆个护')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('彩妆')">彩妆</a>
+                <a href="#" onclick="event.preventDefault(); show('面部护理')">面部护理</a>
+                <a href="#" onclick="event.preventDefault(); show('身体护理')">身体护理</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            图书音像
+            <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); show('图书音像')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('青春文学')">青春文学</a>
+                <a href="#" onclick="event.preventDefault(); show('经管类图书')">经管类图书</a>
+                <a href="#" onclick="event.preventDefault(); show('政治/军事')">政治/军事</a>
+                <a href="#" onclick="event.preventDefault(); show('旅游/地图')">旅游/地图</a>
+                <a href="#" onclick="event.preventDefault(); show('育儿/早教')">育儿/早教</a>
+                <a href="#" onclick="event.preventDefault(); show('哲学/宗教')">哲学/宗教</a>
+                <a href="#" onclick="event.preventDefault(); show('文学艺术')">文学艺术</a>
+                <a href="#" onclick="event.preventDefault(); show('少儿/教育图书')">少儿/教育图书</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            家居生活
+            <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); show('家居生活')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('杯具/水壶')">杯具/水壶</a>
+                <a href="#" onclick="event.preventDefault(); show('保温杯/保温壶')">保温杯/保温壶</a>
+                <a href="#" onclick="event.preventDefault(); show('收纳整理')">收纳整理</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            母婴/玩具
+            <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); show('母婴/玩具')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('尿裤湿巾')">尿裤湿巾</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            钟表/首饰/眼镜/礼品
+            <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); show('钟表/首饰/眼镜/礼品')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('钟表')">钟表</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            工艺饰品
+            <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); show('工艺饰品')">全部</a>
+                <a href="#" onclick="event.preventDefault(); show('家具/家装/建材')">家具/家装/建材</a>
+            </div>
+        </div>
+
+
+
+    </nav>
+
+    <div class="frontpage-section-top">
+        <h1>Welcome to Business RecSys</h1>
+    </div>
+
+    <!-- 其余页面内容 -->
     <div class="ml4-container" style="min-height: 920px;">
         <div id="main-container">
             <div class="frontpage" id="recPage">
-                <div class="frontpage-section-top">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h1>give feedback</h1>
-                            <div class="jumbotron ml4-jumbotron" style="padding-top: 0;">
-                                <p> To collect your feedback, please create issue on our project github homepage
-                                    <a href="https://github.com/wzhe06/SparrowRecSys/issues"
-                                       target="_blank">Sparrow RecSys Github</a>.</p>
-                                <p>
-                                    <button class="btn btn-primary btn-lg"
-                                            onclick="location.href='https://github.com/wzhe06/SparrowRecSys/issues';">
-                                        give feedback
-                                    </button>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <footer class="base-compact-footer">
-        <div class="ml4-container">
-            <div class="row ml4-footer-row">
-                <div class="col-md-2">
-                    <ul class="list-unstyled">
-                        <li class="header section-header">learn more</li>
-                        <li><a href="https://github.com/wzhe06/SparrowRecSys">about
-                            Sparrow RecSys</a></li>
-                        <li><a
-                                href="https://wzhe.me">about Zhe Wang</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2">
-                    <ul class="list-unstyled">
-                        <li class="header section-header">Zhe Wang's wechat</li>
-                        <li>
-                            <img alt="GroupLens logo" src="./images/wzscan.jpg" width="110"/>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-5 col-md-offset-1">
-                    <div class="gl-logo section-header">
-                        <img alt="GroupLens logo" height="25"
-                             src="./resources/grouplens-logo-110.png" width="110"/>
-                    </div>
-                    <p> Sparrow RecSys is an open source recommender system, which is founded and maintained by <a href="https://github.com/wzhe06">Wang Zhe</a>, a senior machine learning engineer. </p>
-                    <p> version 1.0.0
-                        <!----></p>
-                    <p>copyright &copy; 2020</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 </div>
-</body>
+
+
 
 <script type="text/javascript">
 
-    // 电子产品
-    addAllByCategory('电子产品');
-    addAllByCategory('外设产品');
-    addAllByCategory('存储设备');
-    addAllByCategory('家用电器');
-    addAllByCategory('手机通讯');
-
-    // 美妆个护
-    addAllByCategory('美妆个护');
-    addAllByCategory('彩妆');
-    addAllByCategory('面部护理');
-    addAllByCategory('身体护理');
-
-    // 图书音像
-    addAllByCategory('图书音像');
-    addAllByCategory('青春文学');
-    addAllByCategory('经管类图书');
-    addAllByCategory('政治/军事');
-    addAllByCategory('旅游/地图');
-    addAllByCategory("育儿/早教");
-    addAllByCategory('哲学/宗教');
-    addAllByCategory('文学艺术');
-    addAllByCategory('少儿/教育图书');
-
-    // 家居生活
-    addAllByCategory('家居生活');
-    addAllByCategory('杯具/水壶');
-    addAllByCategory('保温杯/保温壶');
-    addAllByCategory('收纳整理');
-
-    // 母婴/玩具
-    addAllByCategory('母婴/玩具');
-    addAllByCategory('尿裤湿巾');
-
-    // 钟表/首饰/眼镜/礼品
-    addAllByCategory('钟表/首饰/眼镜/礼品');
-    addAllByCategory('钟表');
-
-    // 工艺饰品
-    addAllByCategory('工艺饰品');
-    addAllByCategory('家具/家装/建材');
-
-
-
-
-
-// addGenreRow('#recPage', '图书音像', '图书音像-collection-3', size , baseUrl,24,31);
-// addGenreRow('#recPage', '图书音像', '图书音像-collection-2', size , baseUrl,16,23);
-// addGenreRow('#recPage', '图书音像', '图书音像-collection-1', size , baseUrl,8,15);
-// addGenreRow('#recPage', '图书音像', '图书音像-collection-0', size , baseUrl,0,7);
-// addGenreRow('#recPage', '美妆个护', '图书音像-collectiodn', size , baseUrl,0,7);
-
+    function show(category) {
+        document.getElementById('recPage').innerHTML = '';
+        console.log('加载类别:', category);
+        addAllByCategory(category);
+    }
 </script>
+</body>
 </html>
