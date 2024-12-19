@@ -14,7 +14,7 @@
                       <div class="movie-card-md1">\
                        <div class="card">\
                         <link-or-emit>\
-                         <a uisref="base.movie" onclick="incrementX()" href="./movie.html?productId='+movieId+'">\
+                         <a uisref="base.movie" onclick="incrementX();add_product('+movieId+')" href="./movie.html?productId='+movieId+'">\
                          <span>\
                            <div class="poster">\
                             <img src="./posters/' + movieId + '.jpg" />\
@@ -25,7 +25,7 @@
                         <div class="overlay">\
                          <div class="above-fold">\
                           <link-or-emit>\
-                           <a uisref="base.movie" onclick="incrementX()" href="./movie.html?productId='+movieId+'">\
+                           <a uisref="base.movie" onclick="incrementX();add_product('+movieId+')" href="./movie.html?productId='+movieId+'">\
                            <span><p class="title">' + movieName + '</p></span></a>\
                           </link-or-emit>\
                           <div class="rating-indicator">\
@@ -349,7 +349,7 @@ function addUserDetails(containerId, userId, baseUrl) {
 
  function checkAndShowPopup() {
      // 当 x 等于 5 时，显示悬浮窗口
-     if (x >= 5) {
+     if (x >= 1) {
          document.getElementById('rec-button').style.display = 'flex';
      }
  }
