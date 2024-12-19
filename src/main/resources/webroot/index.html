@@ -16,7 +16,9 @@
     <script src="./js/recsys.js?v=1.19"></script>
 
     <style>
-
+        body {
+            background: linear-gradient(to right, #1c83b4, #5bc0de); /* 从左到右的渐变 */
+        }
         .poster img {
             transition: transform 0.3s ease; /* 添加过渡动画 */
         }
@@ -26,6 +28,7 @@
         }
 
         .movie-row .movie-row-bounds .movie-row-scrollable {
+            /*background-color: rgba(0, 0, 0, 0.1);*/
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
@@ -33,18 +36,17 @@
             transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
         }
         .movie-row .movie-row-bounds .movie-row-item {
-
+            /*background-color: rgba(0, 0, 0, 0.1);*/
             margin-bottom: 15px; /* 每行的底部间隔 20px */
             background-color: #f3f3f3;
             text-align: center;
             padding: 0px;
             border: 0px solid #ddd;
-            border-radius: 0px;
         }
 
-        .movie-card-md1{
-            margin:0 5px 15px 0
-        }
+        /*.movie-card-md1{*/
+        /*    border-radius: 20px;*/
+        /*}*/
         /* 顶部导航栏的样式 */
 
         .top-nav {
@@ -269,7 +271,7 @@
             right: 120px;             /* 距离页面右侧 120px */
             width: 100px;             /* 按钮宽度 */
             height: 60px;            /* 按钮高度 */
-            color: #fff;             /* 按钮文字颜色 */
+            color: white;             /* 按钮文字颜色 */
             border: none;           /* 无边框 */
             border-radius: 25%;     /* 圆角按钮 */
             font-size: 20px;        /* 字体大小 */

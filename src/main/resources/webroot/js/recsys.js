@@ -349,7 +349,7 @@ function addUserDetails(containerId, userId, baseUrl) {
 
  function checkAndShowPopup() {
      // 当 x 等于 5 时，显示悬浮窗口
-     if (x >= 1) {
+     if (x >= 5) {
          document.getElementById('rec-button').style.display = 'flex';
      }
  }
