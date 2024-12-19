@@ -14,7 +14,7 @@
                       <div class="movie-card-md1">\
                        <div class="card">\
                         <link-or-emit>\
-                         <a uisref="base.movie" href="./movie.html?productId='+movieId+'">\
+                         <a uisref="base.movie" onclick="incrementX()" href="./movie.html?productId='+movieId+'">\
                          <span>\
                            <div class="poster">\
                             <img src="./posters/' + movieId + '.jpg" />\
@@ -25,7 +25,7 @@
                         <div class="overlay">\
                          <div class="above-fold">\
                           <link-or-emit>\
-                           <a uisref="base.movie" href="./movie.html?productId='+movieId+'">\
+                           <a uisref="base.movie" onclick="incrementX()" href="./movie.html?productId='+movieId+'">\
                            <span><p class="title">' + movieName + '</p></span></a>\
                           </link-or-emit>\
                           <div class="rating-indicator">\
@@ -185,8 +185,8 @@ function addUserHistory(pageId, containerId, userId, baseUrl){
 
     $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
             $.each(userObject.ratings, function(i, rating){
-                $.getJSON(baseUrl + "getmovie?id="+rating.rating.productId, function(movieObject){
-                    appendMovie2Row(containerId, movieObject.title, movieObject.productId, movieObject.releaseYear, rating.rating.score, movieObject.ratingNumber, movieObject.genres, baseUrl);
+                $.getJSON(baseUrl + "getproduct?id="+rating.rating.productId, function(movieObject){
+                    appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, rating.rating.score, movieObject.ratingNumber, movieObject.categories, baseUrl);
                 });
             });
     });
@@ -210,7 +210,7 @@ function addRecForYou(pageId, containerId, userId, model, baseUrl){
 
     $.getJSON(baseUrl + "getrecforyou?id="+userId+"&size=32&model=" + model, function(result){
                 $.each(result, function(i, movie){
-                  appendMovie2Row(containerId, movie.title, movie.productId, movie.releaseYear, movie.averageRating.toPrecision(2), movie.ratingNumber, movie.genres,baseUrl);
+                  appendMovie2Row(containerId, movie.title, movie.productId, 0, movie.averageRating.toPrecision(2), movie.ratingNumber, movie.categories,baseUrl);
                 });
      });
 }
@@ -284,7 +284,7 @@ function addUserDetails(containerId, userId, baseUrl) {
                                             <div class="row movie-highlights">\
                                                 <div class="col-md-2">\
                                                     <div class="heading-and-data">\
-                                                        <div class="movie-details-heading">#Watched Movies</div>\
+                                                        <div class="movie-details-heading">#Scanned Products</div>\
                                                         <div> '+userObject.ratingCount+' </div>\
                                                     </div>\
                                                     <div class="heading-and-data">\
@@ -318,6 +318,46 @@ function addUserDetails(containerId, userId, baseUrl) {
 };
 
 
+ function updateCarousel() {
+     const slideWidth = slides[0].clientWidth;
+     const carouselSlides = document.getElementById('carousel-slides');
+     carouselSlides.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+ }
 
+ function show(category) {
+     document.getElementById('recPage').innerHTML = '';
+     console.log('加载类别:', category);
+     addAllByCategory(category);
+     if(isVisible)
+         toggleVisibility();
+ }
+ function show_firstpage(){
+     if(!isVisible)
+         toggleVisibility();
+     document.getElementById('recPage').innerHTML = '';
+ }
 
+ function toggleVisibility() {
+     const frontpage = document.getElementById('first');
+     if (isVisible) {
+         frontpage.style.display = 'none'; // 隐藏
+     } else {
+         frontpage.style.display = 'block'; // 显示
+     }
+     isVisible = !isVisible; // 反转显示状态
+ }
+
+ function checkAndShowPopup() {
+     // 当 x 等于 5 时，显示悬浮窗口
+     if (x >= 1) {
+         document.getElementById('rec-button').style.display = 'flex';
+     }
+ }
+
+ // 增加 x 的值，并检查是否达到条件
+ function incrementX() {
+
+     x++;
+     checkAndShowPopup();  // 检查 x 是否达到了 5
+ }
 

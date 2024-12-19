@@ -178,6 +178,125 @@
             margin-top: 5px;
             margin-bottom: 5px;
         }
+        /*.floating-window {*/
+        /*    position: fixed;*/
+        /*    bottom: 20px;*/
+        /*    right: 20px;*/
+        /*    width: 250px;*/
+        /*    height: 175px;*/
+        /*    background-color: rgba(0, 0, 0, 0.3);*/
+        /*    color: white;*/
+        /*    display: flex; !* 开启 flex 布局 *!*/
+        /*    justify-content: center; !* 水平居中，其他值可用 flex-start, flex-end *!*/
+        /*    align-items: center; !* 垂直居中，其他值可用 flex-start, flex-end *!*/
+        /*    flex-direction: column;*/
+        /*    padding: 10px;*/
+        /*    border-radius: 10px;*/
+        /*    display: none;*/
+        /*    z-index: 1000;*/
+        /*}*/
+        /*.buttons{*/
+        /*    margin-top: 30px;*/
+        /*    display: flex; !* 开启 flex 布局 *!*/
+        /*    justify-content: center; !* 水平居中，其他值可用 flex-start, flex-end *!*/
+        /*    align-items: center; !* 垂直居中，其他值可用 flex-start, flex-end *!*/
+        /*    flex-direction: row;*/
+        /*}*/
+        /*.floating-content {*/
+        /*    color: white;*/
+        /*    text-align: center;*/
+        /*    font-size: 20px;*/
+        /*}*/
+
+
+        /*.floating-window button {*/
+        /*    width: 70px;*/
+        /*    height: 55px;*/
+        /*    background-color: #007bff;*/
+        /*    color: white;*/
+        /*    border: none;*/
+        /*    padding: 0px 0px;*/
+        /*    border-radius: 5px;*/
+        /*    cursor: pointer;*/
+        /*    font-size: 15px;*/
+        /*}*/
+
+        /*.floating-window button:hover {*/
+        /*    background-color: green;*/
+        /*}*/
+        /*.floating-close-button button {*/
+        /*    margin-left: 20px;*/
+        /*}*/
+        /*.floating-close-button button:hover {*/
+        /*    background-color: red;*/
+        /*}*/
+
+        /* 悬浮按钮样式 */
+        .floating-button {
+            position: fixed;         /* 固定位置 */
+            bottom: 20px;            /* 距离页面底部 20px */
+            right: 20px;             /* 距离页面右侧 20px */
+            width: 60px;             /* 按钮宽度 */
+            height: 60px;            /* 按钮高度 */
+            background-color: #007bff; /* 按钮背景色 */
+            color: #fff;             /* 按钮文字颜色 */
+            border: none;           /* 无边框 */
+            border-radius: 50%;     /* 圆形按钮 */
+            font-size: 24px;        /* 字体大小 */
+            cursor: pointer;        /* 鼠标样式 */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 增强阴影 */
+            transition: all 0.3s;   /* 过渡效果 */
+            z-index: 9999;          /* 保证按钮在最上方 */
+        }
+
+        /* 鼠标悬浮在按钮上时的样式 */
+        .floating-button:hover {
+            background-color: #0056b3; /* 更深的蓝色 */
+            transform: scale(1.1);      /* 鼠标悬停时放大 */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* 悬浮时更强的阴影 */
+        }
+
+        /* 按钮被点击时的效果 */
+        .floating-button:active {
+            background-color: #003b73; /* 更深的蓝色 */
+            transform: scale(0.95);      /* 按钮缩小 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 按下时减小阴影 */
+        }
+
+        .rec-button {
+            position: fixed;         /* 固定位置 */
+            bottom: 20px;            /* 距离页面底部 20px */
+            right: 120px;             /* 距离页面右侧 120px */
+            width: 100px;             /* 按钮宽度 */
+            height: 60px;            /* 按钮高度 */
+            color: #fff;             /* 按钮文字颜色 */
+            border: none;           /* 无边框 */
+            border-radius: 25%;     /* 圆角按钮 */
+            font-size: 20px;        /* 字体大小 */
+            cursor: pointer;        /* 鼠标样式 */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 增强阴影 */
+            transition: all 1s ease; /* 更长的过渡时间，并使用 'ease' 过渡曲线 */
+            z-index: 9999;          /* 保证按钮在最上方 */
+            display: none;
+            justify-content: center;   /* 水平方向居中 */
+            align-items: center;       /* 垂直方向居中 */
+            background-color: orange;
+        }
+
+        /* 鼠标悬浮在按钮上时的样式 */
+        .rec-button:hover {
+            background-color: orangered;
+            transform: scale(1.1);      /* 鼠标悬停时放大 */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* 增强阴影 */
+            transition: all 1s ease;  /* 使悬停时的过渡更自然 */
+        }
+
+        /* 按钮被点击时的效果 */
+        .rec-button:active {
+            transform: scale(0.95);      /* 按钮缩小 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 按下时减小阴影 */
+            transition: all 0.2s ease-out; /* 点击时快速缩放效果 */
+        }
 
 
     </style>
@@ -260,9 +379,26 @@
             </div>
         </div>
 
-
-
     </nav>
+
+
+<!--    <div id="floating-window" class="floating-window">-->
+<!--        <div class="floating-content">-->
+<!--            <p>你被推荐了！</p>-->
+<!--        </div>-->
+<!--        <div id="buttons" class="buttons">-->
+<!--            <div class="floating-button">-->
+<!--                <button id="close-window">确认</button>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 关闭按钮 &ndash;&gt;-->
+<!--            <div class="floating-close-button">-->
+<!--                <button id="close-button">取消</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+    <button class="rec-button" id="rec-button" onclick="go_rec()">为我推荐</button>
+    <button class="floating-button" onclick="scrollToTop()">↑</button>
 
     <div class="frontpage-description">
         <h1>Welcome to Business RecSys</h1>
@@ -284,34 +420,6 @@
 
 
 <script type="text/javascript">
-    function updateCarousel() {
-        const slideWidth = slides[0].clientWidth;
-        const carouselSlides = document.getElementById('carousel-slides');
-        carouselSlides.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-    }
-
-    function show(category) {
-        document.getElementById('recPage').innerHTML = '';
-        console.log('加载类别:', category);
-        addAllByCategory(category);
-        if(isVisible)
-            toggleVisibility();
-    }
-    function show_firstpage(){
-        if(!isVisible)
-            toggleVisibility();
-        document.getElementById('recPage').innerHTML = '';
-    }
-
-    function toggleVisibility() {
-        const frontpage = document.getElementById('first');
-        if (isVisible) {
-            frontpage.style.display = 'none'; // 隐藏
-        } else {
-            frontpage.style.display = 'block'; // 显示
-        }
-        isVisible = !isVisible; // 反转显示状态
-    }
 
     add_firstpage('#first');
 
@@ -319,6 +427,8 @@
     const slides = document.querySelectorAll('.carousel-slide');
     const totalSlides = 3;
     let isVisible = true;
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
 
 
     document.getElementById('next').addEventListener('click', () => {
@@ -331,11 +441,26 @@
         updateCarousel();
     });
     carouselInterval = setInterval(() => {
+        console.log(x);
         currentIndex = (currentIndex + 1) % totalSlides; // 循环播放幻灯片
         updateCarousel();
-    }, 3000); // 每3秒切换一次幻灯片
+    }, 3000); // 每3秒切换一次幻灯片并打印x的值
+
+    let x = 0;  // 初始化 x
 
 
+    function go_rec(){
+        x = 0;
+        // 跳转到新页面（可以修改为你需要的 URL）
+        window.location.href = baseUrl+'user.html?id=110108';  // 替换成目标 URL
+    }
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'  // 平滑滚动
+        });
+    }
 
 </script>
 </body>
