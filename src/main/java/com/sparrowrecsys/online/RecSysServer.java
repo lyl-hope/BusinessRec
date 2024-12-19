@@ -99,6 +99,7 @@ public class RecSysServer {
         context.addServlet(new ServletHolder(new RecommendationService()), "/getrecommendation");
         context.addServlet(new ServletHolder(new RecForYouService()), "/getrecforyou");
         context.addServlet(new ServletHolder(new CategoryProductCountService()), "/getProductCountByCategory");
+        context.addServlet(new ServletHolder(new RecommendationClient()), "/getsimilaruser");
 
         // 设置 URL 处理器
         server.setHandler(context);
