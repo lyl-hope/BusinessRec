@@ -451,10 +451,39 @@
     let x = 0;  // 初始化 x
 
 
+
     function go_rec(){
         x = 0;
+
+        // 2. 将变量插入 JSON 对象中
+        const jsonData = {
+            user_id: userId,
+            clicked_items: clickedItems
+        };
+        console.log(jsonData);
+
+        // 发送POST请求到localhost:5000
+        fetch('http://localhost:5000', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // 将响应解析为JSON
+            })
+            .then(data => {
+                console.log('Success:', data); // 打印服务器返回的JSON
+            })
+            .catch(error => {
+                console.error('Error:', error); // 处理任何错误
+            });
         // 跳转到新页面（可以修改为你需要的 URL）
-        window.location.href = baseUrl+'user.html?id=110108';  // 替换成目标 URL
+        //window.location.href = baseUrl+'user.html?id=110108';  // 替换成目标 URL
     }
 
     function scrollToTop() {
@@ -462,6 +491,14 @@
             top: 0,
             behavior: 'smooth'  // 平滑滚动
         });
+    }
+
+    var userId = 110108;
+    var clickedItems = [];
+
+
+    function add_product(productId){
+        clickedItems.push(productId);
     }
 
 </script>
