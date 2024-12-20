@@ -168,11 +168,12 @@ function add_firstpage(pageId){
     $(pageId).prepend(rowDiv);
 }
 
- function addClickItem(pageId, containerId, userId, baseUrl){
-     console.log("Items",clickedItems);
+
+ function addRecForYou(pageId, containerId, userId, model, baseUrl){
+
      var rowDiv = '<div class="frontpage-section-top"> \
                 <div class="explore-header frontpage-section-header">\
-                 User Scanned Products \
+                 Recommended For You \
                 </div>\
                 <div class="movie-row">\
                  <div class="movie-row-bounds">\
@@ -184,15 +185,15 @@ function add_firstpage(pageId){
                </div>'
      $(pageId).prepend(rowDiv);
 
-     for(var i = 0; i < clickedItems.length; i++){
-         $.getJSON(baseUrl + "getproduct?id="+clickedItems[i], function(movieObject){
-             appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, movieObject.averageRating.toPrecision(2), movieObject.ratingNumber, movieObject.categories, baseUrl);
+     $.getJSON(baseUrl + "getrecforyou?id="+userId+"&size=32&model=" + model, function(result){
+         $.each(result, function(i, movie){
+             appendMovie2Row(containerId, movie.title, movie.productId, 0, movie.averageRating.toPrecision(2), movie.ratingNumber, movie.categories,baseUrl);
          });
-     }
-
+     });
  }
 
- function addRecForYou(pageId, containerId, userId,rec_user_id, model, baseUrl){
+
+ function addRecFornewYou(pageId, containerId, userId,rec_user_id, model, baseUrl){
 
      var rowDiv = '<div class="frontpage-section-top"> \
                 <div class="explore-header frontpage-section-header">\
@@ -215,8 +216,57 @@ function add_firstpage(pageId){
      });
  }
 
+ function addUserscanHistory(pageId, containerId, userId, baseUrl){
 
-function addMovieDetails(containerId, movieId, baseUrl) {
+     var rowDiv = '<div class="frontpage-section-top"> \
+                <div class="explore-header frontpage-section-header">\
+                 User Scanned Products \
+                </div>\
+                <div class="movie-row">\
+                 <div class="movie-row-bounds">\
+                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
+                  </div>\
+                 </div>\
+                 <div class="clearfix"></div>\
+                </div>\
+               </div>'
+     $(pageId).prepend(rowDiv);
+
+     $.getJSON(baseUrl + "getuserscanlist?userId="+userId +'&size=100', function(userObject){
+         $.each(userObject.productId, function(i, productid){
+             $.getJSON(baseUrl + "getproduct?id="+productid, function(movieObject){
+                 appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, movieObject.averageRating.toPrecision(2), movieObject.ratingNumber, movieObject.categories, baseUrl);
+             });
+         });
+     });
+ }
+
+ function addUserratingHistory(pageId, containerId, userId, baseUrl){
+
+     var rowDiv = '<div class="frontpage-section-top"> \
+                <div class="explore-header frontpage-section-header">\
+                 User Rating Products \
+                </div>\
+                <div class="movie-row">\
+                 <div class="movie-row-bounds">\
+                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
+                  </div>\
+                 </div>\
+                 <div class="clearfix"></div>\
+                </div>\
+               </div>'
+     $(pageId).prepend(rowDiv);
+
+     $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
+         $.each(userObject.ratings, function(i, rating){
+             $.getJSON(baseUrl + "getproduct?id="+rating.rating.productId, function(movieObject){
+                 appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, rating.rating.score, movieObject.ratingNumber, movieObject.categories, baseUrl);
+             });
+         });
+     });
+ }
+
+ function addMovieDetails(containerId, movieId, baseUrl) {
 
     $.getJSON(baseUrl + "getproduct?id="+movieId, function(movieObject){
         var genres = "";
@@ -231,7 +281,7 @@ function addMovieDetails(containerId, movieId, baseUrl) {
 
         var ratingUsers = "";
                 $.each(movieObject.topRatings, function(i, rating){
-                        ratingUsers += ('<span><a href="'+baseUrl+'user.html?id='+rating.rating.userId+'"><b>User'+rating.rating.userId+'</b></a>');
+                        ratingUsers += ('<span><a href="'+baseUrl+'olduser.html?id='+rating.rating.userId+'"><b>User'+rating.rating.userId+'</b></a>');
                         if(i < movieObject.topRatings.length-1){
                             ratingUsers+=", </span>";
                         }else{
@@ -273,10 +323,10 @@ function addMovieDetails(containerId, movieId, baseUrl) {
     });
 };
 
-function addUserDetails(containerId, userId, baseUrl) {
+ function addoldUserDetails(containerId, userId, baseUrl) {
 
-    $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
-        var userDetails = '<div class="row movie-details-header movie-details-block">\
+     $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
+         var userDetails = '<div class="row movie-details-header movie-details-block">\
                                         <div class="col-md-2 header-backdrop">\
                                             <img alt="movie backdrop image" height="200" src="./images/avatar/'+userObject.userId%10+'.png">\
                                         </div>\
@@ -285,7 +335,7 @@ function addUserDetails(containerId, userId, baseUrl) {
                                                 <div class="col-md-2">\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading">#Scanned Products</div>\
-                                                        <div> '+clickedItems.length+' </div>\
+                                                        <div> '+ userObject.ratingCount +' </div>\
                                                     </div>\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading"> Average Rating Score</div>\
@@ -307,7 +357,55 @@ function addUserDetails(containerId, userId, baseUrl) {
                                                 <div class="col-md-6">\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading">Favourite Genres</div>\
-                                                        '+'action'+'\
+                                                        '+userObject.userCategory1+'\
+                                                    </div>\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                    </div>'
+         $("#"+containerId).prepend(userDetails);
+     });
+ };
+
+function addUserDetails(containerId, userId, baseUrl) {
+
+    $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
+        var userDetails = '<div class="row movie-details-header movie-details-block">\
+                                        <div class="col-md-2 header-backdrop">\
+                                            <img alt="movie backdrop image" height="200" src="./images/avatar/'+userObject.userId%10+'.png">\
+                                        </div>\
+                                        <div class="col-md-9"><h1 class="movie-title"> User'+userObject.userId+' </h1>\
+                                            <div class="row movie-highlights">\
+                                                <div class="col-md-2">\
+                                                    <div class="heading-and-data">\
+                                                        <div class="movie-details-heading">#Scanned Products</div>\
+                                                        <div> '+ userObject.scanCount +' </div>\
+                                                    </div>\
+                                                    \<div class="heading-and-data">\
+                                                        <div class="movie-details-heading">#Rating Products</div>\
+                                                        <div> '+ userObject.ratingCount +' </div>\
+                                                    </div>\
+                                                </div>\
+                                                <div class="col-md-3">\
+                                                     <div class="heading-and-data">\
+                                                        <div class="movie-details-heading"> Average Rating Score</div>\
+                                                        <div> '+userObject.averageRating.toPrecision(2)+' stars\
+                                                        </div>\
+                                                    </div>\
+                                                    <div class="heading-and-data">\
+                                                        <div class="movie-details-heading"> Highest Rating Score</div>\
+                                                        <div> '+userObject.highestRating.toPrecision(2)+' stars</div>\
+                                                    </div>\
+                                                </div>\
+                                                <div class="col-md-6">\
+                                                    <div class="heading-and-data">\
+                                                        <div class="movie-details-heading"> Lowest Rating Score</div>\
+                                                        <div> '+userObject.lowestRating.toPrecision(2)+' stars\
+                                                        </div>\
+                                                    </div>\
+                                                    <div class="heading-and-data">\
+                                                        <div class="movie-details-heading">Favourite Genres</div>\
+                                                        '+userObject.userCategory1+'\
                                                     </div>\
                                                 </div>\
                                             </div>\
@@ -349,15 +447,19 @@ function addUserDetails(containerId, userId, baseUrl) {
 
  function checkAndShowPopup() {
      // 当 x 等于 5 时，显示悬浮窗口
-     if (x >= 1) {
+
+     if (sessionStorage.getItem('x') >= 1) {
          document.getElementById('rec-button').style.display = 'flex';
      }
  }
 
  // 增加 x 的值，并检查是否达到条件
  function incrementX() {
-
-     x++;
+     var temp = sessionStorage.getItem('x')
+     temp++;
+     sessionStorage.setItem('x', temp); // 使用 sessionStorage
      checkAndShowPopup();  // 检查 x 是否达到了 5
  }
+
+
 

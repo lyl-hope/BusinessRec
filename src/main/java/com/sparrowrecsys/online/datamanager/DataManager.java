@@ -281,11 +281,14 @@ public class DataManager {
     public synchronized boolean addRatingForUser(int userId, int productId, float score) {
         User user = userMap.get(userId);
         Product product = productMap.get(productId);
-        if (user == null||product == null) {
+        if (user == null) {
             System.out.println("用户不存在: " + userId);
             return false;
         }
-
+        if (product == null) {
+            System.out.println("物品不存在: " + productId);
+            return false;
+        }
         // 自动生成时间戳
         long timestamp = System.currentTimeMillis();
         Rating rating = new Rating();

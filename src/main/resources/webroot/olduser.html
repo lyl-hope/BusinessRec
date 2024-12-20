@@ -5,13 +5,13 @@
     <!--<base href="/">-->
     <base href="."/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>Home | Business RecSys</title>
+    <title>Home | Sparrow RecSys</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="theme-color" content="#ffffff"/>
     <link type="text/plain" rel="author"/>
     <link href="./css/style.css" rel="stylesheet"/>
-    <link rel="shortcut icon" href="resources/favicon1.ico">
+    <link rel="shortcut icon" href="resources/favicon2.ico">
     <script src="./js/jquery-3.2.1.min.js"></script>
     <script src="./js/recsys.js?v=1.19"></script>
     <style>
@@ -24,7 +24,7 @@
         <div class="ml4-container base-header-primary-container">
             <div class="base-header-logo-container">
                 <span class="base-header-logo-main">
-                    <a href="."><img alt="Sparrow RecSys Logo" height="30px" src="./images/logo2.jpg"/></a>
+                    <a href="sampledata"><img alt="Sparrow RecSys Logo" height="30px" src="./images/logo2.jpg"/></a>
                 </span>
             </div>
 
@@ -42,41 +42,34 @@
             </div>
         </div>
     </div>
-    <footer class="base-compact-footer">
 
-    </footer>
 </div>
 </body>
 
 <script type="text/javascript">
 
-    $(document).ready()
+    function getQueryString(name, windowLocation) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = windowLocation.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    };
 
-function getQueryString(name, windowLocation) {
-    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-    var r = windowLocation.search.substr(1).match(reg);
-    if (r != null) {
-        return unescape(r[2]);
+    var windowLocation = window.location;
+    var userId = getQueryString("id",windowLocation);
+    var model = getQueryString("model",windowLocation);
+    if(null == model){
+        model = "emb";
+        //model = "nerualcf"
     }
-    return null;
-};
 
-var windowLocation = window.location;
-var userId = getQueryString("id",windowLocation);
-var rec_user_id = getQueryString("rec_user_id",windowLocation);
-var model = getQueryString("model",windowLocation);
-if(null == model){
-    model = "emb";
-    //model = "nerualcf"
-}
+    var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
 
-var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
-
-
-addUserDetails("user-details-container", userId, baseUrl);
-addRecFornewYou("#recPage", "recForYou", userId,rec_user_id, model, baseUrl);
-addUserratingHistory("#recPage", "userratingHistory", userId, baseUrl);
-addUserscanHistory("#recPage", "userHistory", userId, baseUrl);
+    addoldUserDetails("user-details-container", userId, baseUrl);
+    addRecForYou("#recPage", "recForYou", userId, model, baseUrl);
+    addUserHistory("#recPage", "userHistory", userId, baseUrl);
 
 </script>
 </html>

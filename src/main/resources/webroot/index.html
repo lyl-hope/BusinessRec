@@ -16,289 +16,7 @@
     <script src="./js/recsys.js?v=1.19"></script>
 
     <style>
-        body {
-            background: linear-gradient(to right, #1c83b4, #5bc0de,#add8e6); /* 从左到右的渐变 */
-        }
-        .poster img {
-            transition: transform 0.3s ease; /* 添加过渡动画 */
-        }
 
-        .poster img:hover {
-            transform: scale(0.9); /* 鼠标悬停时缩小到 0.9 倍 */
-        }
-
-        .movie-row .movie-row-bounds .movie-row-scrollable {
-            /*background-color: rgba(0, 0, 0, 0.1);*/
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            overflow-x: hidden;
-            transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
-        }
-        .movie-row .movie-row-bounds .movie-row-item {
-            /*background-color: rgba(0, 0, 0, 0.1);*/
-            margin-bottom: 15px; /* 每行的底部间隔 20px */
-            background-color: #f3f3f3;
-            text-align: center;
-            padding: 0px;
-            border: 0px solid #ddd;
-        }
-
-        /*.movie-card-md1{*/
-        /*    border-radius: 20px;*/
-        /*}*/
-        /* 顶部导航栏的样式 */
-
-        .top-nav {
-            display: flex;
-            background-color: #007bff;
-            padding: 10px 20px;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .nav-item {
-            position: relative;
-            color: white;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .nav-item a{
-            color: white;
-        }
-        .nav-item:hover {
-            background-color: #0056b3;
-            border-radius: 5px;
-            color: lightskyblue;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            left: 0;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-        }
-
-        .dropdown-menu a {
-            display: block;
-            padding: 10px 20px;
-            color: #333;
-            text-decoration: none;
-        }
-
-        .dropdown-menu a:hover {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .nav-item:hover .dropdown-menu {
-            display: block;
-        }
-        .carousel-container {
-            width: 60%;
-            height: 400px;
-            margin: 20px auto;
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .carousel-slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            height: 400px;
-            background-size: contain; /* 改为 contain，确保图片完整显示 */
-            background-position: center;
-            background-repeat: no-repeat; /* 确保图片不重复 */
-        }
-
-
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .carousel-arrow {
-            background-color: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            border-radius: 50%;
-        }
-
-        .carousel-arrow:hover {
-            background-color: rgba(0,0,0,0.8);
-        }
-
-        .frontpage-description h2 {
-            font-size: 36px; /* 增大标题字体 */
-            font-family: 'Arial', sans-serif; /* 使用现代字体 */
-            font-weight: bold; /* 加粗标题 */
-            margin-bottom: 15px; /* 调整标题与段落之间的间距 */
-            color: #333; /* 深色文本以增加对比度 */
-            letter-spacing: 1px; /* 增加字母间距 */
-            text-align: center; /* 居中对齐标题 */
-        }
-
-        .frontpage-description p {
-            font-size: 20px; /* 增大段落字体 */
-            color: #666; /* 更柔和的颜色 */
-            line-height: 1.8; /* 增加行间距，使文字更舒适阅读 */
-            max-width: 800px; /* 限制段落最大宽度，避免行过长 */
-            margin: 0 auto; /* 将段落居中 */
-            text-align: center; /* 使段落文本两端对齐 */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 改变字体 */
-        }
-
-        .frontpage-description {
-            padding: 5px; /* 给容器添加内边距 */
-            background-color: #f9f9f9; /* 背景颜色更柔和 */
-            border-radius: 10px; /* 添加圆角 */
-
-            text-align: center; /* 整个容器内容居中 */
-        }
-
-        .frontpage-description h1{
-            text-align: center;
-            color: gray;
-            font-size: 30px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-        /*.floating-window {*/
-        /*    position: fixed;*/
-        /*    bottom: 20px;*/
-        /*    right: 20px;*/
-        /*    width: 250px;*/
-        /*    height: 175px;*/
-        /*    background-color: rgba(0, 0, 0, 0.3);*/
-        /*    color: white;*/
-        /*    display: flex; !* 开启 flex 布局 *!*/
-        /*    justify-content: center; !* 水平居中，其他值可用 flex-start, flex-end *!*/
-        /*    align-items: center; !* 垂直居中，其他值可用 flex-start, flex-end *!*/
-        /*    flex-direction: column;*/
-        /*    padding: 10px;*/
-        /*    border-radius: 10px;*/
-        /*    display: none;*/
-        /*    z-index: 1000;*/
-        /*}*/
-        /*.buttons{*/
-        /*    margin-top: 30px;*/
-        /*    display: flex; !* 开启 flex 布局 *!*/
-        /*    justify-content: center; !* 水平居中，其他值可用 flex-start, flex-end *!*/
-        /*    align-items: center; !* 垂直居中，其他值可用 flex-start, flex-end *!*/
-        /*    flex-direction: row;*/
-        /*}*/
-        /*.floating-content {*/
-        /*    color: white;*/
-        /*    text-align: center;*/
-        /*    font-size: 20px;*/
-        /*}*/
-
-
-        /*.floating-window button {*/
-        /*    width: 70px;*/
-        /*    height: 55px;*/
-        /*    background-color: #007bff;*/
-        /*    color: white;*/
-        /*    border: none;*/
-        /*    padding: 0px 0px;*/
-        /*    border-radius: 5px;*/
-        /*    cursor: pointer;*/
-        /*    font-size: 15px;*/
-        /*}*/
-
-        /*.floating-window button:hover {*/
-        /*    background-color: green;*/
-        /*}*/
-        /*.floating-close-button button {*/
-        /*    margin-left: 20px;*/
-        /*}*/
-        /*.floating-close-button button:hover {*/
-        /*    background-color: red;*/
-        /*}*/
-
-        /* 悬浮按钮样式 */
-        .floating-button {
-            position: fixed;         /* 固定位置 */
-            bottom: 20px;            /* 距离页面底部 20px */
-            right: 20px;             /* 距离页面右侧 20px */
-            width: 60px;             /* 按钮宽度 */
-            height: 60px;            /* 按钮高度 */
-            background-color: #007bff; /* 按钮背景色 */
-            color: #fff;             /* 按钮文字颜色 */
-            border: none;           /* 无边框 */
-            border-radius: 50%;     /* 圆形按钮 */
-            font-size: 24px;        /* 字体大小 */
-            cursor: pointer;        /* 鼠标样式 */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 增强阴影 */
-            transition: all 0.3s;   /* 过渡效果 */
-            z-index: 9999;          /* 保证按钮在最上方 */
-        }
-
-        /* 鼠标悬浮在按钮上时的样式 */
-        .floating-button:hover {
-            background-color: #0056b3; /* 更深的蓝色 */
-            transform: scale(1.1);      /* 鼠标悬停时放大 */
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* 悬浮时更强的阴影 */
-        }
-
-        /* 按钮被点击时的效果 */
-        .floating-button:active {
-            background-color: #003b73; /* 更深的蓝色 */
-            transform: scale(0.95);      /* 按钮缩小 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 按下时减小阴影 */
-        }
-
-        .rec-button {
-            position: fixed;         /* 固定位置 */
-            bottom: 20px;            /* 距离页面底部 20px */
-            right: 120px;             /* 距离页面右侧 120px */
-            width: 100px;             /* 按钮宽度 */
-            height: 60px;            /* 按钮高度 */
-            color: white;             /* 按钮文字颜色 */
-            border: none;           /* 无边框 */
-            border-radius: 25%;     /* 圆角按钮 */
-            font-size: 20px;        /* 字体大小 */
-            cursor: pointer;        /* 鼠标样式 */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 增强阴影 */
-            transition: all 1s ease; /* 更长的过渡时间，并使用 'ease' 过渡曲线 */
-            z-index: 9999;          /* 保证按钮在最上方 */
-            display: none;
-            justify-content: center;   /* 水平方向居中 */
-            align-items: center;       /* 垂直方向居中 */
-            background-color: orange;
-        }
-
-        /* 鼠标悬浮在按钮上时的样式 */
-        .rec-button:hover {
-            background-color: orangered;
-            transform: scale(1.1);      /* 鼠标悬停时放大 */
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* 增强阴影 */
-            transition: all 1s ease;  /* 使悬停时的过渡更自然 */
-        }
-
-        /* 按钮被点击时的效果 */
-        .rec-button:active {
-            transform: scale(0.95);      /* 按钮缩小 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 按下时减小阴影 */
-            transition: all 0.2s ease-out; /* 点击时快速缩放效果 */
-        }
 
 
     </style>
@@ -380,7 +98,9 @@
                 <a href="#" onclick="event.preventDefault(); show('家具/家装/建材')">家具/家装/建材</a>
             </div>
         </div>
-
+        <div class="nav-item-2">
+            <a href="./register.html" color="white" id = 'login-register-btn'>登录/注册</a>
+        </div>
     </nav>
 
 
@@ -422,6 +142,17 @@
 
 
 <script type="text/javascript">
+    window.onload = function() {
+        const loginRegisterButton = document.getElementById('login-register-btn');
+        const state = sessionStorage.getItem('state');
+        const username = sessionStorage.getItem('username');
+
+        if (state === 'true' && username) {
+            loginRegisterButton.textContent = username;
+        } else {
+            loginRegisterButton.textContent = '登录/注册';
+        }
+    };
 
     add_firstpage('#first');
 
@@ -432,6 +163,11 @@
     var getUrl = window.location;
     var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
 
+    // $.getJSON('http://localhost:6010/adduser', function(result){
+    //     console.log(result);
+    //     sessionStorage.setItem('nowId',result.userId);
+    //     console.log(sessionStorage.getItem('nowId'))
+    // });
 
     document.getElementById('next').addEventListener('click', () => {
         currentIndex = (currentIndex + 1) % totalSlides;
@@ -443,37 +179,43 @@
         updateCarousel();
     });
     carouselInterval = setInterval(() => {
-        console.log(x);
+        console.log( sessionStorage.getItem('x'));
+        console.log( sessionStorage.getItem('nowId'));
         currentIndex = (currentIndex + 1) % totalSlides; // 循环播放幻灯片
         updateCarousel();
     }, 3000); // 每3秒切换一次幻灯片并打印x的值
 
-    let x = 0;  // 初始化 x
 
 
+    sessionStorage.setItem('x', 0); // 使用 sessionStorage
 
     function go_rec(){
-        x = 0;
-
+        sessionStorage.setItem('x', 0);
+        var temp = baseUrl + "getsimilaruser?user_id="+ sessionStorage.getItem('nowId') +"&clicked_items=";
         // 2. 将变量插入 JSON 对象中
+        $.getJSON(baseUrl + "getuser?id="+sessionStorage.getItem('nowId'), function(userObject){
+            $.each(userObject.ratings, function(i, rating){
+                $.getJSON(baseUrl + "getproduct?id="+rating.rating.productId, function(movieObject){
+                    if(i===0)
+                        temp += movieObject.productId
+                    else
+                        temp += ',' + movieObject.productId
+                });
+            });
+        });
+        //http://localhost:6010/getsimilaruser?user_id=12345&clicked_items=1001,1002,1003
 
-        http://localhost:6010/getsimilaruser?user_id=12345&clicked_items=1001,1002,1003
-        var temp = baseUrl + "getsimilaruser?user_id="+ userId +"&clicked_items=";
-        for(var i = 0; i < clickedItems.length; i++){
-            if(i===0)
-            temp += clickedItems[i]
-            else temp += ',' + clickedItems[i]
-        }
         console.log(temp);
+
         //{"prediction":0.8322860969849478,"userId":"35655"}
 
-        sessionStorage.setItem('clickedItems', JSON.stringify(clickedItems)); // 使用 sessionStorage
+        //sessionStorage.setItem('clickedItems', JSON.stringify(clickedItems)); // 使用 sessionStorage
 
         $.getJSON(temp, function(result){
             console.log(result);
             console.log(result.prediction)
             console.log(result.userId)
-            window.location.href = baseUrl+'user.html?id='+userId+'&rec_user_id='+result.userId;  // 替换成目标 URL
+            window.location.href = baseUrl+'user.html?id='+sessionStorage.getItem('nowId')+'&rec_user_id='+result.userId;  // 替换成目标 URL
             });
 
     }
@@ -485,13 +227,21 @@
         });
     }
 
-    var userId = "110108";
-    var clickedItems = [];
+    //var userId = "";
 
+    // $.getJSON('http://localhost:6010/adduser', function(result){
+    //     console.log(result);
+    //     userId = sessionStorage.getItem('nowId');
+    //     sessionStorage.setItem('nowId',result.userId);
+    // });
+
+    var clickedItems = [];
+//http://localhost:6010/getuserscanlist?userId=1&size=5
 
     function add_product(productId){
-        if(clickedItems.indexOf(productId)===-1)
-        clickedItems.push(productId);
+        $.getJSON(baseUrl + "addrating?userId="+sessionStorage.getItem('nowId')+"&clicked_items=" + productId, function(result){
+            console.log(result);
+        });
     }
 
 </script>

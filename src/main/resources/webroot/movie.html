@@ -5,7 +5,7 @@
     <!--<base href="/">-->
     <base href="."/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>Home | Sparrow RecSys</title>
+    <title>Home | Business RecSys</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="theme-color" content="#ffffff"/>
@@ -13,36 +13,15 @@
     <link href="./css/style.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="resources/favicon2.ico">
     <script src="./js/jquery-3.2.1.min.js"></script>
-    <script src="./js/recsys.js?v=1.25"></script>
+    <script src="./js/recsys.js?v=1.19"></script>
     <style>
-        .poster img {
-            transition: transform 0.3s ease; /* 添加过渡动画 */
-        }
 
-        .poster img:hover {
-            transform: scale(0.9); /* 鼠标悬停时缩小到 0.9 倍 */
-        }
 
-        .movie-row .movie-row-bounds .movie-row-scrollable {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            overflow-x: hidden;
-            transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
-        }
-        .movie-row .movie-row-bounds .movie-row-item {
 
-            margin-bottom: 15px; /* 每行的底部间隔 20px */
-            background-color: #f3f3f3;
-            text-align: center;
-            padding: 0px;
-            border: 0px solid #ddd;
-            border-radius: 0px;
-        }
 
-        .movie-card-md1{
-            margin:0 5px 15px 0
-        }
+
+
+
     </style>
 </head>
 <body id="root">
@@ -51,27 +30,10 @@
         <div class="ml4-container base-header-primary-container">
             <div class="base-header-logo-container">
                 <span class="base-header-logo-main">
-                    <a href="."><img alt="Sparrow RecSys Logo" height="30px" src="./images/sparrowrecsyslogo.png"/></a>
+                    <a href="."><img alt="Sparrow RecSys Logo" height="30px" src="./images/logo2.jpg"/></a>
                 </span>
             </div>
-            <div class="base-header-search-container">
-                <form class="form-inline ng-pristine ng-valid ng-touched" novalidate="" role="form">
-                    <div class="input-group input-group-sm base-header-search-box">
-               <span class="twitter-typeahead" style="position: relative; display: inline-block;">
-                   <input class="form-control input-sm no-glow tt-input ng-pristine ng-valid ng-touched"
-                          id="omnisearch-typeahead" name="currentVal" type="text" spellcheck="false" dir="auto"
-                          aria-owns="omnisearch-typeahead_listbox" role="combobox"
-                          aria-readonly="true" aria-autocomplete="list"
-                          style="position: relative; vertical-align: top; background-color: transparent;"/>
-                </span>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm no-glow">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-            </div>
+
         </div>
     </header>
     <div class="base-compact-header-spacer"></div>
@@ -79,6 +41,13 @@
         <div id="main-container">
             <div class="movie-alt" id="movie-details-container">
             </div>
+            <div class="rating-container">
+                <label for="rating">评分 (0.0-5.0):</label>
+                <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" value="0.0" />
+                <span id="ratingValue">0.0</span>
+                <button id="submitRating" onclick="submitRating()">提交评分</button>
+            </div>
+
             <div class="frontpage" id="recPage">
                 <div class="frontpage-section-top">
                     <div class="row">
@@ -86,13 +55,22 @@
                     </div>
                 </div>
             </div>
+
+            <button class="rec-button" id="rec-button" onclick="go_rec()">为我推荐</button>
+            <button class="floating-button" onclick="scrollToTop()">↑</button>
+
         </div>
     </div>
 </div>
 </body>
 
 <script type="text/javascript">
-
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'  // 平滑滚动
+        });
+    }
 function getQueryString(name, windowLocation) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
     var r = windowLocation.search.substr(1).match(reg);
@@ -104,8 +82,38 @@ function getQueryString(name, windowLocation) {
 
 var windowLocation = window.location;
 var productId = getQueryString("productId",windowLocation);
-
+var userId = sessionStorage.getItem('nowId');
+console.log('nowUser',userId)
 var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
+
+
+function rating(score){
+    $.getJSON(baseUrl + "addrating?userId="+sessionStorage.getItem('nowId')+"&clicked_items=" + productId + "&score=" + score , function(result){
+        console.log(result);
+    });
+}
+
+function submitRating() {
+    // 获取评分的值，确保是数字并保留一位小数
+    var score = parseFloat(document.getElementById("rating").value).toFixed(1);
+    console.log(score);
+    // 显示评分值
+    document.getElementById("ratingValue").textContent = score;
+
+    // 调用评分更新函数
+    rating(score);
+}
+
+document.getElementById("rating").addEventListener("input", function() {
+    // 当输入框改变时，实时显示评分值
+    document.getElementById("ratingValue").textContent = parseFloat(this.value).toFixed(1);;
+});
+
+function add_product(productId){
+    $.getJSON(baseUrl + "addrating?userId="+sessionStorage.getItem('nowId')+"&clicked_items=" + productId, function(result){
+        console.log(result);
+    });
+}
 
 addMovieDetails("movie-details-container", productId, baseUrl);
 addRelatedMovies("#recPage", "relatedMovies", productId, baseUrl);
