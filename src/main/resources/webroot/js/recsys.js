@@ -168,8 +168,52 @@ function add_firstpage(pageId){
     $(pageId).prepend(rowDiv);
 }
 
+ function addClickItem(pageId, containerId, userId, baseUrl){
+     console.log("Items",clickedItems);
+     var rowDiv = '<div class="frontpage-section-top"> \
+                <div class="explore-header frontpage-section-header">\
+                 User Scanned Products \
+                </div>\
+                <div class="movie-row">\
+                 <div class="movie-row-bounds">\
+                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
+                  </div>\
+                 </div>\
+                 <div class="clearfix"></div>\
+                </div>\
+               </div>'
+     $(pageId).prepend(rowDiv);
 
+     for(var i = 0; i < clickedItems.length; i++){
+         $.getJSON(baseUrl + "getproduct?id="+clickedItems[i], function(movieObject){
+             appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, movieObject.averageRating.toPrecision(2), movieObject.ratingNumber, movieObject.categories, baseUrl);
+         });
+     }
 
+ }
+
+ function addRecForYou(pageId, containerId, userId,rec_user_id, model, baseUrl){
+
+     var rowDiv = '<div class="frontpage-section-top"> \
+                <div class="explore-header frontpage-section-header">\
+                 Recommended For '+ userId +'\
+                </div>\
+                <div class="movie-row">\
+                 <div class="movie-row-bounds">\
+                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
+                  </div>\
+                 </div>\
+                 <div class="clearfix"></div>\
+                </div>\
+               </div>'
+     $(pageId).prepend(rowDiv);
+
+     $.getJSON(baseUrl + "getrecforyou?id="+rec_user_id+"&size=32&model=" + model, function(result){
+         $.each(result, function(i, movie){
+             appendMovie2Row(containerId, movie.title, movie.productId, 0, movie.averageRating.toPrecision(2), movie.ratingNumber, movie.categories,baseUrl);
+         });
+     });
+ }
 
 
 function addMovieDetails(containerId, movieId, baseUrl) {
@@ -241,7 +285,7 @@ function addUserDetails(containerId, userId, baseUrl) {
                                                 <div class="col-md-2">\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading">#Scanned Products</div>\
-                                                        <div> '+userObject.ratingCount+' </div>\
+                                                        <div> '+clickedItems.length+' </div>\
                                                     </div>\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading"> Average Rating Score</div>\
