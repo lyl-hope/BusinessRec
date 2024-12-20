@@ -13,13 +13,15 @@ public class User {
     int userId; // 用户ID
     double averageRating = 0; // 平均评分
     double highestRating = 0; // 最高评分
-    double lowestRating = 0; // 最低评分
+    double lowestRating = 6; // 最低评分
     int ratingCount = 0; // 评分数量
 
     @JsonSerialize(using = RatingListSerializer.class)
     List<Rating> ratings; // 用户的评分列表
     double stddevRating; // 评分标准差
     double M2 ; // 用于增量计算标准差的变量
+
+    private Set<Integer> scanlist = new LinkedHashSet<>();
 
     String userCategory1; // 第一种高评分种类
     String userCategory2; // 第二种高评分种类
@@ -71,6 +73,11 @@ public class User {
     // 添加评分并更新平均评分、最高评分、最低评分和评分数量
     public void addRating(Rating rating,Product product) {
         double newScore = rating.getScore();
+        if(newScore<0)
+        {
+            scanlist.add(rating.getProductId());
+            return;
+        }
         this.ratings.add(rating);
 
         // 更新平均值
@@ -201,5 +208,19 @@ public class User {
     // 设置用户特征映射
     public void setUserFeatures(Map<String, String> userFeatures) {
         this.userFeatures = userFeatures;
+    }
+    // 获取扫描过的产品列表（最多返回size个元素）
+    public List<Integer> getScanlist(int size) {
+        List<Integer> result = new ArrayList<>(scanlist);
+        // 如果scanlist的大小超过请求的size，截取前size个元素
+        if (result.size() > size) {
+            return result.subList(0, size);
+        }
+        return result;
+    }
+
+    // 将产品ID添加到scanlist
+    public void addToScanlist(int productId) {
+        scanlist.add(productId); // 自动去重并保留插入顺序
     }
 }

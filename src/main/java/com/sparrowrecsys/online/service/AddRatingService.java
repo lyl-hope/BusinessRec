@@ -34,7 +34,8 @@ public class AddRatingService extends HttpServlet {
             String userIdStr = request.getParameter("userId");
             String clickedItemsStr = request.getParameter("clicked_items");
             String scoreStr = request.getParameter("score");
-            String temp = request.getParameter("score");
+            //String temp = request.getParameter("score");
+            //System.out.println(scoreStr);
             // 判断参数是否为空
             if (userIdStr == null || clickedItemsStr == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -45,7 +46,16 @@ public class AddRatingService extends HttpServlet {
             // 解析 userId
             int userId = Integer.parseInt(userIdStr);
             int productId = Integer.parseInt(clickedItemsStr);
-            float score = Float.parseFloat(scoreStr);
+            float score = scoreStr == null?-1:Float.parseFloat(scoreStr);
+            boolean success =DataManager.getInstance().addRatingForUser(userId, productId, score);
+            if (!success) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("{\"error\": \"Failed to add rating for productId " + productId + "\"}");
+                return;
+            }
+
+
+
 //            // 解析 clicked_items 数组
 //            List<Integer> clickedItems = Arrays.stream(clickedItemsStr.split(","))
 //                    .map(Integer::parseInt)
@@ -53,10 +63,7 @@ public class AddRatingService extends HttpServlet {
 
 //             遍历 clicked_items，为每个 productId 添加评分
 
-            if(temp == null)
-                DataManager.getInstance().addRatingForUser(userId, productId, 3.5F); // 固定评分为 3.5
-            else
-                DataManager.getInstance().addRatingForUser(userId, productId, score); // 固定评分为 3.5
+
 
 
             // 返回成功响应
