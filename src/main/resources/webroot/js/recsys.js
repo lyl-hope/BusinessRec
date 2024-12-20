@@ -388,11 +388,11 @@ function addUserDetails(containerId, userId, baseUrl) {
                                                 <div class="col-md-3">\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading"> Highest Rating Score</div>\
-                                                        <div> '+userObject.highestRating+' stars</div>\
+                                                        <div> '+userObject.highestRating.toPrecision(2)+' stars</div>\
                                                     </div>\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading"> Lowest Rating Score</div>\
-                                                        <div> '+userObject.lowestRating+' stars\
+                                                        <div> '+userObject.lowestRating.toPrecision(2)+' stars\
                                                         </div>\
                                                     </div>\
                                                 </div>\
@@ -454,4 +454,6 @@ function addUserDetails(containerId, userId, baseUrl) {
      sessionStorage.setItem('x', temp); // 使用 sessionStorage
      checkAndShowPopup();  // 检查 x 是否达到了 5
  }
+
+
 

@@ -15,7 +15,33 @@
     <script src="./js/jquery-3.2.1.min.js"></script>
     <script src="./js/recsys.js?v=1.19"></script>
     <style>
-        .poster img {
+
+        .rating-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #rating {
+            width: 100px;
+            margin: 10px 0;
+        }
+
+        #submitRating {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #submitRating:hover {
+            background-color: #45a049;
+        }
+
+
+    .poster img {
             transition: transform 0.3s ease; /* 添加过渡动画 */
         }
 
@@ -62,6 +88,13 @@
         <div id="main-container">
             <div class="movie-alt" id="movie-details-container">
             </div>
+            <div class="rating-container">
+                <label for="rating">评分 (0.0-5.0):</label>
+                <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" value="0.0" />
+                <span id="ratingValue">0.0</span>
+                <button id="submitRating" onclick="submitRating()">提交评分</button>
+            </div>
+
             <div class="frontpage" id="recPage">
                 <div class="frontpage-section-top">
                     <div class="row">
@@ -87,8 +120,32 @@ function getQueryString(name, windowLocation) {
 
 var windowLocation = window.location;
 var productId = getQueryString("productId",windowLocation);
-
+var userId = sessionStorage.getItem('nowId');
+console.log('nowUser',userId)
 var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
+
+
+function rating(score){
+    $.getJSON(baseUrl + "addrating?userId="+userId+"&clicked_items=" + productId + "&score=" + score , function(result){
+        console.log(result);
+    });
+}
+
+function submitRating() {
+    // 获取评分的值，确保是数字并保留一位小数
+    var score = parseFloat(document.getElementById("rating").value).toFixed(1);
+    console.log(score);
+    // 显示评分值
+    document.getElementById("ratingValue").textContent = score;
+
+    // 调用评分更新函数
+    rating(score);
+}
+
+document.getElementById("rating").addEventListener("input", function() {
+    // 当输入框改变时，实时显示评分值
+    document.getElementById("ratingValue").textContent = parseFloat(this.value).toFixed(1);;
+});
 
 addMovieDetails("movie-details-container", productId, baseUrl);
 addRelatedMovies("#recPage", "relatedMovies", productId, baseUrl);
