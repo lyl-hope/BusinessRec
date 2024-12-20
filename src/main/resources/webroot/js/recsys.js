@@ -378,7 +378,7 @@ function addUserDetails(containerId, userId, baseUrl) {
                                             <div class="row movie-highlights">\
                                                 <div class="col-md-2">\
                                                     <div class="heading-and-data">\
-                                                        <div class="movie-details-heading">#Scanned Products</div>\
+                                                        <div class="movie-details-heading">#Rating Products</div>\
                                                         <div> '+ userObject.ratingCount +' </div>\
                                                     </div>\
                                                     <div class="heading-and-data">\

@@ -126,7 +126,7 @@ var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
 
 
 function rating(score){
-    $.getJSON(baseUrl + "addrating?userId="+userId+"&clicked_items=" + productId + "&score=" + score , function(result){
+    $.getJSON(baseUrl + "addrating?userId="+sessionStorage.getItem('nowId')+"&clicked_items=" + productId + "&score=" + score , function(result){
         console.log(result);
     });
 }

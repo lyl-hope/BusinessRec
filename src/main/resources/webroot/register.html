@@ -208,7 +208,11 @@
 
         if(data.mode === 'register'){
             let dataList = JSON.parse(sessionStorage.getItem("dataList")) || [];
-
+            const user = dataList.find(item => item.username === data.username);
+            if (user){
+                console.log("已存在用户名！");
+                document.getElementById('message').innerText = '已存在用户名！';
+            }
             // 将新的 data 对象添加到列表中
             dataList.push(data);
 
@@ -230,7 +234,7 @@
                 // 如果找到相同的用户名，比较密码
                 if (user.password === data.password) {
                     console.log("登录成功！");
-
+                    sessionStorage.setItem('state','true');
                     sessionStorage.setItem('username',username);
                     sessionStorage.setItem('password',password);
                     console.log(sessionStorage.getItem('username'),sessionStorage.getItem('password'))

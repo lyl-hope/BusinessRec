@@ -15,7 +15,7 @@ public class User {
     double highestRating = 0; // 最高评分
     double lowestRating = 6; // 最低评分
     int ratingCount = 0; // 评分数量
-
+    int ScanCount = 0;
     @JsonSerialize(using = RatingListSerializer.class)
     List<Rating> ratings; // 用户的评分列表
     double stddevRating; // 评分标准差
@@ -75,6 +75,7 @@ public class User {
         double newScore = rating.getScore();
         if(newScore<0)
         {
+            ScanCount++;
             scanlist.add(rating.getProductId());
             return;
         }
