@@ -260,8 +260,43 @@ public class DataManager {
         }
         System.out.println("Loading rating data completed. " + count + " ratings in total.");
     }
+    // 自动生成一个 userId 并添加新用户
+    public synchronized int addUserAutomatically() {
+        int newUserId = generateUniqueUserId();
+        User newUser = new User();
+        newUser.setUserId(newUserId);
+        userMap.put(newUserId, newUser);
+        return newUserId;
+    }
 
+    // 生成不重复的 userId
+    private int generateUniqueUserId() {
+        int newUserId = 1; // 从 1 开始生成
+        while (userMap.containsKey(newUserId)) {
+            newUserId++;
+        }
+        return newUserId;
+    }
+    // 给指定 userId 的用户添加评分
+    public synchronized boolean addRatingForUser(int userId, int productId, float score) {
+        User user = userMap.get(userId);
+        Product product = productMap.get(productId);
+        if (user == null||product == null) {
+            System.out.println("用户不存在: " + userId);
+            return false;
+        }
 
+        // 自动生成时间戳
+        long timestamp = System.currentTimeMillis();
+        Rating rating = new Rating();
+        rating.setUserId(userId); // 解析用户ID
+        rating.setProductId(productId); // 解析产品ID
+        rating.setScore(score); // 解析评分
+        rating.setTimestamp(timestamp); // 解析时间戳
+        // 调用 User 的 addRating 方法
+        user.addRating(rating,product);
+        return true;
+    }
     // 将电影添加到类型反向索引中
     private void addProduct2CategoryIndex(String category, Product product) {
         if (!this.categoryReverseIndexMap.containsKey(category)) {
