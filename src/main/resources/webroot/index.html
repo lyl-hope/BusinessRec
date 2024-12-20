@@ -464,11 +464,11 @@
     var getUrl = window.location;
     var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
 
-    $.getJSON('http://localhost:6010/adduser', function(result){
-        console.log(result);
-        sessionStorage.setItem('nowId',result.userId);
-        console.log(sessionStorage.getItem('nowId'))
-    });
+    // $.getJSON('http://localhost:6010/adduser', function(result){
+    //     console.log(result);
+    //     sessionStorage.setItem('nowId',result.userId);
+    //     console.log(sessionStorage.getItem('nowId'))
+    // });
 
     document.getElementById('next').addEventListener('click', () => {
         currentIndex = (currentIndex + 1) % totalSlides;
@@ -481,6 +481,7 @@
     });
     carouselInterval = setInterval(() => {
         console.log( sessionStorage.getItem('x'));
+        console.log( sessionStorage.getItem('nowId'));
         currentIndex = (currentIndex + 1) % totalSlides; // 循环播放幻灯片
         updateCarousel();
     }, 3000); // 每3秒切换一次幻灯片并打印x的值

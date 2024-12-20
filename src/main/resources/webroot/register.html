@@ -160,7 +160,8 @@
     </form>
     <div id="message"></div>
 </div>
-<script >
+<script>
+
     var getUrl = window.location;
     var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
     document.getElementById('message').innerText = '                               ';
@@ -204,26 +205,36 @@
             document.getElementById('message').innerText = '                               ';
         }
 
-        const data = { username: username, password: password, mode: mode };
 
-        if(data.mode === 'register'){
+
+        if(mode === 'register'){
             let dataList = JSON.parse(sessionStorage.getItem("dataList")) || [];
-            const user = dataList.find(item => item.username === data.username);
+            const user = dataList.find(item => item.username === username);
             if (user){
                 console.log("已存在用户名！");
                 document.getElementById('message').innerText = '已存在用户名！';
+                return;
             }
-            // 将新的 data 对象添加到列表中
-            dataList.push(data);
 
-            // 将更新后的列表存回 sessionStorage
-            sessionStorage.setItem("dataList", JSON.stringify(dataList));
 
             console.log("Data stored successfully:", dataList);
+            var tempid ;
+            $.getJSON('http://localhost:6010/adduser', function(result){
+                console.log(result);
+                tempid = result.userId
+                console.log(tempid);
+                const data = { username: username, password: password, mode: mode, userId:tempid};
+                // 将新的 data 对象添加到列表中
+                dataList.push(data);
+                // 将更新后的列表存回 sessionStorage
+                sessionStorage.setItem("dataList", JSON.stringify(dataList));
+            });
+
 
         }
         else
         {
+            const data = { username: username, password: password, mode: mode};
             // 登录模式
             let dataList = JSON.parse(sessionStorage.getItem("dataList")) || [];
 
@@ -233,16 +244,14 @@
             if (user) {
                 // 如果找到相同的用户名，比较密码
                 if (user.password === data.password) {
+
                     console.log("登录成功！");
                     sessionStorage.setItem('state','true');
                     sessionStorage.setItem('username',username);
                     sessionStorage.setItem('password',password);
-                    console.log(sessionStorage.getItem('username'),sessionStorage.getItem('password'))
-                    $.getJSON('http://localhost:6010/adduser', function(result){
-                        console.log(result);
-                        sessionStorage.setItem('nowId',result.userId);
-                        console.log(sessionStorage.getItem('nowId'))
-                    });
+                    sessionStorage.setItem('nowId',user.userId);
+                    console.log(sessionStorage.getItem('username'),sessionStorage.getItem('password'),sessionStorage.getItem('nowId'));
+
 
                     window.location.href = baseUrl+'index.html';
 
