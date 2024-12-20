@@ -494,6 +494,7 @@
     $.getJSON('http://localhost:6010/adduser', function(result){
         console.log(result);
         userId = result.userId
+        sessionStorage.setItem('nowId',result.userId);
     });
 
     var clickedItems = [];
