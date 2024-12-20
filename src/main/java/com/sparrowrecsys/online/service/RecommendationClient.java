@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public class RecommendationClient extends HttpServlet {
 
-    private static final String RECOMMENDATION_URL = "http://192.168.72.128:5000/recommend";
+    private static final String RECOMMENDATION_URL = "http://192.168.237.128:5000/recommend";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

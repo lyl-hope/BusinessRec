@@ -456,34 +456,26 @@
         x = 0;
 
         // 2. 将变量插入 JSON 对象中
-        const jsonData = {
-            user_id: userId,
-            clicked_items: clickedItems
-        };
-        console.log(jsonData);
 
-        // 发送POST请求到localhost:5000
-        fetch('http://localhost:5000', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); // 将响应解析为JSON
-            })
-            .then(data => {
-                console.log('Success:', data); // 打印服务器返回的JSON
-            })
-            .catch(error => {
-                console.error('Error:', error); // 处理任何错误
+        http://localhost:6010/getsimilaruser?user_id=12345&clicked_items=1001,1002,1003
+        var temp = baseUrl + "getsimilaruser?user_id="+ userId +"&clicked_items=";
+        for(var i = 0; i < clickedItems.length; i++){
+            if(i===0)
+            temp += clickedItems[i]
+            else temp += ',' + clickedItems[i]
+        }
+        console.log(temp);
+        //{"prediction":0.8322860969849478,"userId":"35655"}
+
+        sessionStorage.setItem('clickedItems', JSON.stringify(clickedItems)); // 使用 sessionStorage
+
+        $.getJSON(temp, function(result){
+            console.log(result);
+            console.log(result.prediction)
+            console.log(result.userId)
+            window.location.href = baseUrl+'user.html?id='+userId+'&rec_user_id='+result.userId;  // 替换成目标 URL
             });
-        // 跳转到新页面（可以修改为你需要的 URL）
-        //window.location.href = baseUrl+'user.html?id=110108';  // 替换成目标 URL
+
     }
 
     function scrollToTop() {
@@ -493,7 +485,7 @@
         });
     }
 
-    var userId = 110108;
+    var userId = "110108";
     var clickedItems = [];
 
 

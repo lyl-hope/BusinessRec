@@ -167,53 +167,9 @@ function add_firstpage(pageId){
     </div>'
     $(pageId).prepend(rowDiv);
 }
-function addUserHistory(pageId, containerId, userId, baseUrl){
 
-    var rowDiv = '<div class="frontpage-section-top"> \
-                <div class="explore-header frontpage-section-header">\
-                 User Scanned Products \
-                </div>\
-                <div class="movie-row">\
-                 <div class="movie-row-bounds">\
-                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
-                  </div>\
-                 </div>\
-                 <div class="clearfix"></div>\
-                </div>\
-               </div>'
-    $(pageId).prepend(rowDiv);
 
-    $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
-            $.each(userObject.ratings, function(i, rating){
-                $.getJSON(baseUrl + "getproduct?id="+rating.rating.productId, function(movieObject){
-                    appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, rating.rating.score, movieObject.ratingNumber, movieObject.categories, baseUrl);
-                });
-            });
-    });
-}
 
-function addRecForYou(pageId, containerId, userId, model, baseUrl){
-
-    var rowDiv = '<div class="frontpage-section-top"> \
-                <div class="explore-header frontpage-section-header">\
-                 Recommended For You \
-                </div>\
-                <div class="movie-row">\
-                 <div class="movie-row-bounds">\
-                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
-                  </div>\
-                 </div>\
-                 <div class="clearfix"></div>\
-                </div>\
-               </div>'
-    $(pageId).prepend(rowDiv);
-
-    $.getJSON(baseUrl + "getrecforyou?id="+userId+"&size=32&model=" + model, function(result){
-                $.each(result, function(i, movie){
-                  appendMovie2Row(containerId, movie.title, movie.productId, 0, movie.averageRating.toPrecision(2), movie.ratingNumber, movie.categories,baseUrl);
-                });
-     });
-}
 
 
 function addMovieDetails(containerId, movieId, baseUrl) {
