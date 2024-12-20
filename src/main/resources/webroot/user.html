@@ -55,6 +55,7 @@
 </body>
 
 <script type="text/javascript">
+
     $(document).ready()
 
 function getQueryString(name, windowLocation) {
@@ -76,22 +77,11 @@ if(null == model){
 }
 
 var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
-var clickedItems = sessionStorage.getItem('clickedItems');
-
-// 将字符串解析为数组
-clickedItems = JSON.parse(clickedItems);
-
-// 检查它是否是数组
-if (Array.isArray(clickedItems)) {
-    console.log('clickedItems 是一个数组', clickedItems);
-} else {
-    console.log('clickedItems 不是一个数组');
-}
 
 
 addUserDetails("user-details-container", userId, baseUrl);
-addRecForYou("#recPage", "recForYou", userId,rec_user_id, model, baseUrl);
-addClickItem("#recPage", "userHistory", userId, baseUrl);
+addRecFornewYou("#recPage", "recForYou", userId,rec_user_id, model, baseUrl);
+addUserHistory("#recPage", "userHistory", userId, baseUrl);
 
 </script>
 </html>

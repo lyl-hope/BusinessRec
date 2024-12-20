@@ -443,31 +443,35 @@
         updateCarousel();
     });
     carouselInterval = setInterval(() => {
-        console.log(x);
+        console.log( sessionStorage.getItem('x'));
         currentIndex = (currentIndex + 1) % totalSlides; // 循环播放幻灯片
         updateCarousel();
     }, 3000); // 每3秒切换一次幻灯片并打印x的值
 
-    let x = 0;  // 初始化 x
 
 
+    sessionStorage.setItem('x', 0); // 使用 sessionStorage
 
     function go_rec(){
-        x = 0;
-
-        // 2. 将变量插入 JSON 对象中
-
-        http://localhost:6010/getsimilaruser?user_id=12345&clicked_items=1001,1002,1003
+        sessionStorage.setItem('x', 0);
         var temp = baseUrl + "getsimilaruser?user_id="+ userId +"&clicked_items=";
-        for(var i = 0; i < clickedItems.length; i++){
-            if(i===0)
-            temp += clickedItems[i]
-            else temp += ',' + clickedItems[i]
-        }
+        // 2. 将变量插入 JSON 对象中
+        $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
+            $.each(userObject.ratings, function(i, rating){
+                $.getJSON(baseUrl + "getproduct?id="+rating.rating.productId, function(movieObject){
+                    if(i===0)
+                        temp += movieObject.productId
+                    else
+                        temp += ',' + movieObject.productId
+                });
+            });
+        });
+        //http://localhost:6010/getsimilaruser?user_id=12345&clicked_items=1001,1002,1003
+
         console.log(temp);
         //{"prediction":0.8322860969849478,"userId":"35655"}
 
-        sessionStorage.setItem('clickedItems', JSON.stringify(clickedItems)); // 使用 sessionStorage
+        //sessionStorage.setItem('clickedItems', JSON.stringify(clickedItems)); // 使用 sessionStorage
 
         $.getJSON(temp, function(result){
             console.log(result);
@@ -485,13 +489,20 @@
         });
     }
 
-    var userId = "110108";
+    var userId = "";
+
+    $.getJSON('http://localhost:6010/adduser', function(result){
+        console.log(result);
+        userId = result.userId
+    });
+
     var clickedItems = [];
 
 
     function add_product(productId){
-        if(clickedItems.indexOf(productId)===-1)
-        clickedItems.push(productId);
+        $.getJSON(baseUrl + "addrating?userId="+userId+"&clicked_items=" + productId + "&score=2.0" , function(result){
+            console.log(result);
+        });
     }
 
 </script>

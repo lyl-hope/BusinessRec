@@ -13,7 +13,7 @@ public class User {
     int userId; // 用户ID
     double averageRating = 0; // 平均评分
     double highestRating = 0; // 最高评分
-    double lowestRating = 5.0; // 最低评分
+    double lowestRating = 0; // 最低评分
     int ratingCount = 0; // 评分数量
 
     @JsonSerialize(using = RatingListSerializer.class)
@@ -106,6 +106,7 @@ public class User {
             recentHighRatings.poll();
         }
     }
+
     private void updateRecentHighCategories(Product product) {
         if (product.getCategories() != null && !product.getCategories().isEmpty()) {
             String category = product.getCategories().get(0); // 取第一个类别
