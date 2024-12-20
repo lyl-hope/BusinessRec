@@ -1,10 +1,263 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title id="formTitle">用户登录</title>
+    <link rel="stylesheet" >
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!--<base href="/">-->
+    <base href="."/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="theme-color" content="#ffffff"/>
+    <link type="text/plain" rel="author"/>
+    <link href="./css/style.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="resources/favicon2.ico">
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/recsys.js?v=1.19"></script>
 </head>
-<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        .container {
+            background-color: #fff;
+            padding: 40px 80px; /* 增大padding */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            max-width: 600px; /* 增大最大宽度 */
+        }
+
+        .toggle-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px; /* 修改后的宽度 */
+            height: 24px; /* 修改后的高度 */
+        }
+
+        .switch:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 24px;
+            transition: .4s;
+        }
+
+        .switch:after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+
+        input:checked + .switch:before {
+            background-color: #007BFF;
+        }
+
+        input:checked + .switch:after {
+            transform: translateX(16px);
+        }
+
+        h2 {
+            margin-bottom: 30px; /* 增大margin-bottom */
+            font-size: 24px; /* 增大字体大小 */
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 10px; /* 增大margin */
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 30px; /* 增大margin-bottom */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px; /* 增大padding */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        #togglePassword {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #007BFF;
+            padding: 0;
+        }
+
+        button {
+            padding: 15px 30px; /* 增大padding */
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px; /* 增大字体大小 */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #message {
+            margin-top: 30px; /* 增大margin-top */
+            color: red;
+            font-size: 16px; /* 增大字体大小 */
+        }
+    </style>
+<body>
+<div class="container">
+    <div class="toggle-switch">
+        <input type="checkbox" id="toggleButton" onclick="toggleMode()">
+        <label for="toggleButton" class="switch"></label>
+    </div>
+    <h2 id="formHeader">用户登录界面</h2>
+    <form id="authForm">
+        <label for="username">用户名：</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">密码：</label>
+        <div class="input-container">
+            <input type="password" id="password" name="password" required>
+            <button type="button" id="togglePassword">👁️</button>
+        </div>
+        <button type="submit">提交</button>
+    </form>
+    <div id="message"></div>
+</div>
+<script >
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
+    document.getElementById('message').innerText = '                               ';
+    let mode = 'login';
+
+    function toggleMode() {
+        mode = mode === 'login' ? 'register' : 'login';
+        document.getElementById('formTitle').innerText = mode === 'login' ? '用户登录' : '用户注册';
+        document.getElementById('formHeader').innerText = mode === 'login' ? '用户登录界面' : '用户注册界面';
+
+        // 清空输入框的内容
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+    }
+
+    function isPasswordStrong(password) {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        return hasUpperCase && hasLowerCase && hasNumber;
+    }
+
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('password');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+    document.getElementById('authForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // 阻止表单的默认提交行为
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (mode === 'register' && !isPasswordStrong(password)) {
+            document.getElementById('message').innerText = '密码必须包含大写字母、小写字母和数字。';
+            return;
+        }
+        else{
+            document.getElementById('message').innerText = '                               ';
+        }
+
+        const data = { username: username, password: password, mode: mode };
+
+        if(data.mode === 'register'){
+            let dataList = JSON.parse(sessionStorage.getItem("dataList")) || [];
+
+            // 将新的 data 对象添加到列表中
+            dataList.push(data);
+
+            // 将更新后的列表存回 sessionStorage
+            sessionStorage.setItem("dataList", JSON.stringify(dataList));
+
+            console.log("Data stored successfully:", dataList);
+
+        }
+        else
+        {
+            // 登录模式
+            let dataList = JSON.parse(sessionStorage.getItem("dataList")) || [];
+
+            // 查找是否已经存在相同的用户名
+            const user = dataList.find(item => item.username === data.username);
+
+            if (user) {
+                // 如果找到相同的用户名，比较密码
+                if (user.password === data.password) {
+                    console.log("登录成功！");
+
+                    sessionStorage.setItem('username',username);
+                    sessionStorage.setItem('password',password);
+                    console.log(sessionStorage.getItem('username'),sessionStorage.getItem('password'))
+                    $.getJSON('http://localhost:6010/adduser', function(result){
+                        console.log(result);
+                        sessionStorage.setItem('nowId',result.userId);
+                        console.log(sessionStorage.getItem('nowId'))
+                    });
+
+                    window.location.href = baseUrl+'index.html';
+
+                } else {
+                    console.log("密码错误！");
+                    document.getElementById('message').innerText = '密码错误！';
+                }
+            } else {
+                console.log("用户名不存在！");
+                document.getElementById('message').innerText = '用户名不存在！';
+            }
+
+        }
+
+
+
+
+    });
+
+</script>
 </body>
 </html>

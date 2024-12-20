@@ -168,29 +168,6 @@ function add_firstpage(pageId){
     $(pageId).prepend(rowDiv);
 }
 
- function addClickItem(pageId, containerId, userId, baseUrl){
-     console.log("Items",clickedItems);
-     var rowDiv = '<div class="frontpage-section-top"> \
-                <div class="explore-header frontpage-section-header">\
-                 User Scanned Products \
-                </div>\
-                <div class="movie-row">\
-                 <div class="movie-row-bounds">\
-                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
-                  </div>\
-                 </div>\
-                 <div class="clearfix"></div>\
-                </div>\
-               </div>'
-     $(pageId).prepend(rowDiv);
-
-     for(var i = 0; i < clickedItems.length; i++){
-         $.getJSON(baseUrl + "getproduct?id="+clickedItems[i], function(movieObject){
-             appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, movieObject.averageRating.toPrecision(2), movieObject.ratingNumber, movieObject.categories, baseUrl);
-         });
-     }
-
- }
 
  function addRecForYou(pageId, containerId, userId, model, baseUrl){
 
@@ -239,11 +216,36 @@ function add_firstpage(pageId){
      });
  }
 
- function addUserHistory(pageId, containerId, userId, baseUrl){
+ function addUserscanHistory(pageId, containerId, userId, baseUrl){
 
      var rowDiv = '<div class="frontpage-section-top"> \
                 <div class="explore-header frontpage-section-header">\
                  User Scanned Products \
+                </div>\
+                <div class="movie-row">\
+                 <div class="movie-row-bounds">\
+                  <div class="movie-row-scrollable" id="' + containerId +'" style="margin-left: 0px;">\
+                  </div>\
+                 </div>\
+                 <div class="clearfix"></div>\
+                </div>\
+               </div>'
+     $(pageId).prepend(rowDiv);
+
+     $.getJSON(baseUrl + "getuserscanlist?userId="+userId +'&size=100', function(userObject){
+         $.each(userObject.productId, function(i, productid){
+             $.getJSON(baseUrl + "getproduct?id="+productid, function(movieObject){
+                 appendMovie2Row(containerId, movieObject.title, movieObject.productId, 0, movieObject.averageRating.toPrecision(2), movieObject.ratingNumber, movieObject.categories, baseUrl);
+             });
+         });
+     });
+ }
+
+ function addUserratingHistory(pageId, containerId, userId, baseUrl){
+
+     var rowDiv = '<div class="frontpage-section-top"> \
+                <div class="explore-header frontpage-section-header">\
+                 User Rating Products \
                 </div>\
                 <div class="movie-row">\
                  <div class="movie-row-bounds">\
@@ -264,7 +266,7 @@ function add_firstpage(pageId){
      });
  }
 
-function addMovieDetails(containerId, movieId, baseUrl) {
+ function addMovieDetails(containerId, movieId, baseUrl) {
 
     $.getJSON(baseUrl + "getproduct?id="+movieId, function(movieObject){
         var genres = "";

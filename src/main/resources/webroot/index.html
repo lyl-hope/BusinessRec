@@ -83,7 +83,7 @@
             padding: 10px 20px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 13px;
         }
 
         .nav-item-2 a{
@@ -400,7 +400,7 @@
             </div>
         </div>
         <div class="nav-item-2">
-            <a href="./register.html" color="white" >注册</a>
+            <a href="./register.html" color="white" >登录/注册</a>
         </div>
     </nav>
 
@@ -475,9 +475,9 @@
 
     function go_rec(){
         sessionStorage.setItem('x', 0);
-        var temp = baseUrl + "getsimilaruser?user_id="+ userId +"&clicked_items=";
+        var temp = baseUrl + "getsimilaruser?user_id="+ sessionStorage.getItem('nowId') +"&clicked_items=";
         // 2. 将变量插入 JSON 对象中
-        $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
+        $.getJSON(baseUrl + "getuser?id="+sessionStorage.getItem('nowId'), function(userObject){
             $.each(userObject.ratings, function(i, rating){
                 $.getJSON(baseUrl + "getproduct?id="+rating.rating.productId, function(movieObject){
                     if(i===0)
@@ -490,6 +490,7 @@
         //http://localhost:6010/getsimilaruser?user_id=12345&clicked_items=1001,1002,1003
 
         console.log(temp);
+
         //{"prediction":0.8322860969849478,"userId":"35655"}
 
         //sessionStorage.setItem('clickedItems', JSON.stringify(clickedItems)); // 使用 sessionStorage
@@ -498,7 +499,7 @@
             console.log(result);
             console.log(result.prediction)
             console.log(result.userId)
-            window.location.href = baseUrl+'user.html?id='+userId+'&rec_user_id='+result.userId;  // 替换成目标 URL
+            window.location.href = baseUrl+'user.html?id='+sessionStorage.getItem('nowId')+'&rec_user_id='+result.userId;  // 替换成目标 URL
             });
 
     }
@@ -510,19 +511,19 @@
         });
     }
 
-    var userId = "";
+    //var userId = "";
 
-    $.getJSON('http://localhost:6010/adduser', function(result){
-        console.log(result);
-        userId = result.userId
-        sessionStorage.setItem('nowId',result.userId);
-    });
+    // $.getJSON('http://localhost:6010/adduser', function(result){
+    //     console.log(result);
+    //     userId = sessionStorage.getItem('nowId');
+    //     sessionStorage.setItem('nowId',result.userId);
+    // });
 
     var clickedItems = [];
-
+//http://localhost:6010/getuserscanlist?userId=1&size=5
 
     function add_product(productId){
-        $.getJSON(baseUrl + "addrating?userId="+userId+"&clicked_items=" + productId + "&score=2.0" , function(result){
+        $.getJSON(baseUrl + "addrating?userId="+sessionStorage.getItem('nowId')+"&clicked_items=" + productId, function(result){
             console.log(result);
         });
     }
