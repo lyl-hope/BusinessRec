@@ -100,7 +100,8 @@ public class RecSysServer {
         context.addServlet(new ServletHolder(new RecForYouService()), "/getrecforyou");
         context.addServlet(new ServletHolder(new CategoryProductCountService()), "/getProductCountByCategory");
         context.addServlet(new ServletHolder(new RecommendationClient()), "/getsimilaruser");
-
+        context.addServlet(new ServletHolder(new AddUserService()), "/adduser");
+        context.addServlet(new ServletHolder(new AddRatingService()), "/addrating");
         // 设置 URL 处理器
         server.setHandler(context);
         System.out.println("RecSys 服务器已启动。");
