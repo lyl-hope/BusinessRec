@@ -5,7 +5,7 @@
     <!--<base href="/">-->
     <base href="."/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>Home | Sparrow RecSys</title>
+    <title>Home | Business RecSys</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="theme-color" content="#ffffff"/>
@@ -16,59 +16,12 @@
     <script src="./js/recsys.js?v=1.19"></script>
     <style>
 
-        .rating-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #rating {
-            width: 100px;
-            margin: 10px 0;
-        }
-
-        #submitRating {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        #submitRating:hover {
-            background-color: #45a049;
-        }
 
 
-    .poster img {
-            transition: transform 0.3s ease; /* 添加过渡动画 */
-        }
 
-        .poster img:hover {
-            transform: scale(0.9); /* 鼠标悬停时缩小到 0.9 倍 */
-        }
 
-        .movie-row .movie-row-bounds .movie-row-scrollable {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            overflow-x: hidden;
-            transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
-        }
-        .movie-row .movie-row-bounds .movie-row-item {
 
-            margin-bottom: 15px; /* 每行的底部间隔 20px */
-            background-color: #f3f3f3;
-            text-align: center;
-            padding: 0px;
-            border: 0px solid #ddd;
-            border-radius: 0px;
-        }
 
-        .movie-card-md1{
-            margin:0 5px 15px 0
-        }
     </style>
 </head>
 <body id="root">
@@ -102,13 +55,22 @@
                     </div>
                 </div>
             </div>
+
+            <button class="rec-button" id="rec-button" onclick="go_rec()">为我推荐</button>
+            <button class="floating-button" onclick="scrollToTop()">↑</button>
+
         </div>
     </div>
 </div>
 </body>
 
 <script type="text/javascript">
-
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'  // 平滑滚动
+        });
+    }
 function getQueryString(name, windowLocation) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
     var r = windowLocation.search.substr(1).match(reg);
@@ -146,6 +108,12 @@ document.getElementById("rating").addEventListener("input", function() {
     // 当输入框改变时，实时显示评分值
     document.getElementById("ratingValue").textContent = parseFloat(this.value).toFixed(1);;
 });
+
+function add_product(productId){
+    $.getJSON(baseUrl + "addrating?userId="+sessionStorage.getItem('nowId')+"&clicked_items=" + productId, function(result){
+        console.log(result);
+    });
+}
 
 addMovieDetails("movie-details-container", productId, baseUrl);
 addRelatedMovies("#recPage", "relatedMovies", productId, baseUrl);

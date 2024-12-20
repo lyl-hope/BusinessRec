@@ -378,27 +378,31 @@ function addUserDetails(containerId, userId, baseUrl) {
                                             <div class="row movie-highlights">\
                                                 <div class="col-md-2">\
                                                     <div class="heading-and-data">\
+                                                        <div class="movie-details-heading">#Scanned Products</div>\
+                                                        <div> '+ userObject.scanCount +' </div>\
+                                                    </div>\
+                                                    \<div class="heading-and-data">\
                                                         <div class="movie-details-heading">#Rating Products</div>\
                                                         <div> '+ userObject.ratingCount +' </div>\
                                                     </div>\
-                                                    <div class="heading-and-data">\
+                                                </div>\
+                                                <div class="col-md-3">\
+                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading"> Average Rating Score</div>\
                                                         <div> '+userObject.averageRating.toPrecision(2)+' stars\
                                                         </div>\
                                                     </div>\
-                                                </div>\
-                                                <div class="col-md-3">\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading"> Highest Rating Score</div>\
                                                         <div> '+userObject.highestRating.toPrecision(2)+' stars</div>\
                                                     </div>\
+                                                </div>\
+                                                <div class="col-md-6">\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading"> Lowest Rating Score</div>\
                                                         <div> '+userObject.lowestRating.toPrecision(2)+' stars\
                                                         </div>\
                                                     </div>\
-                                                </div>\
-                                                <div class="col-md-6">\
                                                     <div class="heading-and-data">\
                                                         <div class="movie-details-heading">Favourite Genres</div>\
                                                         '+userObject.userCategory1+'\
