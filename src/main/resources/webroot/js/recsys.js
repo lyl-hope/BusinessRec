@@ -374,7 +374,7 @@ function addUserDetails(containerId, userId, baseUrl) {
                                         <div class="col-md-2 header-backdrop">\
                                             <img alt="movie backdrop image" height="200" src="./images/avatar/'+userObject.userId%10+'.png">\
                                         </div>\
-                                        <div class="col-md-9"><h1 class="movie-title"> User'+userObject.userId+' </h1>\
+                                        <div class="col-md-9"><h1 class="movie-title"> User:'+sessionStorage.getItem('username')+' </h1>\
                                             <div class="row movie-highlights">\
                                                 <div class="col-md-2">\
                                                     <div class="heading-and-data">\
