@@ -34,17 +34,17 @@
                 </span>
             </div>
             <div class="base-header-search-container">
-                <form class="form-inline ng-pristine ng-valid ng-touched" novalidate="" role="form">
+                <form class="form-inline ng-pristine ng-valid ng-touched" novalidate="" role="form" onsubmit="return false;">
                     <div class="input-group input-group-sm base-header-search-box">
-               <span class="twitter-typeahead" style="position: relative; display: inline-block;">
-                   <input class="form-control input-sm no-glow tt-input ng-pristine ng-valid ng-touched"
-                          id="omnisearch-typeahead" name="currentVal" type="text" spellcheck="false" dir="auto"
-                          aria-owns="omnisearch-typeahead_listbox" role="combobox"
-                          aria-readonly="true" aria-autocomplete="list"
-                          style="position: relative; vertical-align: top; background-color: transparent;"/>
-                </span>
+                        <span class="twitter-typeahead" style="position: relative; display: inline-block;">
+                            <input class="form-control input-sm no-glow tt-input ng-pristine ng-valid ng-touched"
+                                   id="omnisearch-typeahead" name="currentVal" type="text" spellcheck="false" dir="auto"
+                                   aria-owns="omnisearch-typeahead_listbox" role="combobox"
+                                   aria-readonly="true" aria-autocomplete="list"
+                                   style="position: relative; vertical-align: top; background-color: transparent;"/>
+                        </span>
                         <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm no-glow">
+                            <button id="search-button" class="btn btn-default btn-sm no-glow">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
@@ -81,16 +81,24 @@
         return null;
     }
 
-
     var windowLocation = window.location;
-    var type = getQueryString("type",windowLocation);
-    var value = getQueryString("value",windowLocation);
+    var type = getQueryString("type", windowLocation);
+    var value = getQueryString("value", windowLocation);
 
-    var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
-    if(type === "genre")
-    {
-        addGenreRow('#recPage', value, value.toLowerCase() + '-collection', 100, baseUrl,0,8);
+    var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/";
+    if (type === "genre") {
+        addGenreRow('#recPage', value, value.toLowerCase() + '-collection', 100, baseUrl, 0, 8);
     }
 
+    // 监听搜索按钮的点击事件
+    document.getElementById('search-button').addEventListener('click', function() {
+        // 获取搜索框中的内容
+        var searchInput = document.getElementById('omnisearch-typeahead').value;
+        // 更新页面 URL
+        if (searchInput) {
+            var newUrl = baseUrl + "collection.html?type=genre&value=" + encodeURIComponent(searchInput);
+            window.location.href = newUrl;
+        }
+    });
 </script>
 </html>
