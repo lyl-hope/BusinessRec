@@ -69,24 +69,25 @@
 </body>
 
 <script type="text/javascript">
-function getQueryString(name, windowLocation) {
-    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-    var r = windowLocation.search.substr(1).match(reg);
-    if (r != null) {
-        return unescape(r[2]);
+    function getQueryString(name, windowLocation) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = windowLocation.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    };
+
+
+    var windowLocation = window.location;
+    var type = getQueryString("type",windowLocation);
+    var value = getQueryString("value",windowLocation);
+
+    var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
+    if(type == "genre")
+    {
+        addGenreRow('#recPage', value, value.toLowerCase() + '-collection', 100, baseUrl,0,8);
     }
-    return null;
-};
-
-
-var windowLocation = window.location;
-var type = getQueryString("type",windowLocation);
-var value = getQueryString("value",windowLocation);
-
-var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
-if(type == "genre"){
-    addGenreRow('#recPage', value, value.toLowerCase() + '-collection', 100, baseUrl,0,8);
-}
 
 </script>
 </html>
