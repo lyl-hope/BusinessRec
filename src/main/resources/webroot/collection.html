@@ -70,13 +70,16 @@
 
 <script type="text/javascript">
     function getQueryString(name, windowLocation) {
+        // 使用正则表达式匹配查询参数
         var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        // 从 URL 的查询字符串部分进行匹配
         var r = windowLocation.search.substr(1).match(reg);
         if (r != null) {
-            return unescape(r[2]);
+            // 使用 decodeURIComponent 解码参数值
+            return decodeURIComponent(r[2]);
         }
         return null;
-    };
+    }
 
 
     var windowLocation = window.location;
@@ -84,7 +87,7 @@
     var value = getQueryString("value",windowLocation);
 
     var baseUrl = windowLocation.protocol + "//" + windowLocation.host + "/"
-    if(type == "genre")
+    if(type === "genre")
     {
         addGenreRow('#recPage', value, value.toLowerCase() + '-collection', 100, baseUrl,0,8);
     }
