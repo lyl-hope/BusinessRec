@@ -13,15 +13,9 @@
     <link href="./css/style.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="resources/favicon1.ico">
     <script src="./js/jquery-3.2.1.min.js"></script>
-    <script src="./js/recsys.js"></script>
+    <script src="./js/recsys.js?v=1.19"></script>
     <style>
-        .movie-row .movie-row-bounds .movie-row-item{
-            display: block;
-        }
 
-        .movie-card-md1{
-            margin:0 5px 15px 0
-        }
     </style>
 </head>
 <body id="root">
@@ -54,6 +48,15 @@
         </div>
     </header>
     <div class="base-compact-header-spacer"></div>
+
+    <button class="rec-button" id="rec-button" onclick="go_rec()">为我推荐</button>
+    <button class="home-button" id="home-button" onclick="go_home()">HOME</button>
+    <button class="floating-button" onclick="scrollToTop()">↑</button>
+
+    <div class="frontpage-description">
+        <h1>Welcome to Business RecSys</h1>
+    </div>
+
     <div class="ml4-container" style="min-height: 920px;">
         <div id="main-container">
             <div class="frontpage" id="recPage">
@@ -69,6 +72,12 @@
 </body>
 
 <script type="text/javascript">
+    if(sessionStorage.getItem('x')===null)
+        sessionStorage.setItem('x', 0); // 使用 sessionStorage
+    else{
+        checkAndShowPopup();
+    }
+
     function getQueryString(name, windowLocation) {
         // 使用正则表达式匹配查询参数
         var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');

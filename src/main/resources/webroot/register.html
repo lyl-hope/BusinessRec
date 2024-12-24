@@ -197,13 +197,13 @@
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        if (mode === 'register' && !isPasswordStrong(password)) {
-            document.getElementById('message').innerText = '密码必须包含大写字母、小写字母和数字。';
-            return;
-        }
-        else{
-            document.getElementById('message').innerText = '                               ';
-        }
+        // if (mode === 'register' && !isPasswordStrong(password)) {
+        //     document.getElementById('message').innerText = '密码必须包含大写字母、小写字母和数字。';
+        //     return;
+        // }
+        // else{
+        //     document.getElementById('message').innerText = '                               ';
+        // }
 
 
 
@@ -228,8 +228,9 @@
                 dataList.push(data);
                 // 将更新后的列表存回 sessionStorage
                 sessionStorage.setItem("dataList", JSON.stringify(dataList));
-            });
 
+            });
+            document.getElementById('message').innerText = '注册成功！';
 
         }
         else

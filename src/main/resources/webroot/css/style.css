@@ -405,10 +405,45 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 按下时减小阴影 */
 }
 
+
+.home-button {
+    position: fixed;         /* 固定位置 */
+    bottom: 20px;            /* 距离页面底部 20px */
+    right: 100px;             /* 距离页面右侧 120px */
+    width: 100px;             /* 按钮宽度 */
+    height: 60px;            /* 按钮高度 */
+    color: white;             /* 按钮文字颜色 */
+    border: none;           /* 无边框 */
+    border-radius: 25%;     /* 圆角按钮 */
+    font-size: 20px;        /* 字体大小 */
+    cursor: pointer;        /* 鼠标样式 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 增强阴影 */
+    transition: all 1s ease; /* 更长的过渡时间，并使用 'ease' 过渡曲线 */
+    z-index: 9999;          /* 保证按钮在最上方 */
+    justify-content: center;   /* 水平方向居中 */
+    align-items: center;       /* 垂直方向居中 */
+    background-color: #1aab26;
+}
+
+/* 鼠标悬浮在按钮上时的样式 */
+.home-button:hover {
+    background-color: green;
+    transform: scale(1.1);      /* 鼠标悬停时放大 */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* 增强阴影 */
+    transition: all 1s ease;  /* 使悬停时的过渡更自然 */
+}
+
+/* 按钮被点击时的效果 */
+.home-button:active {
+    transform: scale(0.95);      /* 按钮缩小 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 按下时减小阴影 */
+    transition: all 0.2s ease-out; /* 点击时快速缩放效果 */
+}
+
 .rec-button {
     position: fixed;         /* 固定位置 */
     bottom: 20px;            /* 距离页面底部 20px */
-    right: 120px;             /* 距离页面右侧 120px */
+    right: 220px;             /* 距离页面右侧 120px */
     width: 100px;             /* 按钮宽度 */
     height: 60px;            /* 按钮高度 */
     color: white;             /* 按钮文字颜色 */

@@ -460,6 +460,50 @@ function addUserDetails(containerId, userId, baseUrl) {
      sessionStorage.setItem('x', temp); // 使用 sessionStorage
      checkAndShowPopup();  // 检查 x 是否达到了 5
  }
+ function go_rec(){
+     sessionStorage.setItem('x', 0);
+     var temp = baseUrl + "getsimilaruser?user_id="+ sessionStorage.getItem('nowId') +"&clicked_items=";
+     // 2. 将变量插入 JSON 对象中
+     $.getJSON(baseUrl + "getuser?id="+sessionStorage.getItem('nowId'), function(userObject){
+         $.each(userObject.ratings, function(i, rating){
+             $.getJSON(baseUrl + "getproduct?id="+rating.rating.productId, function(movieObject){
+                 if(i===0)
+                     temp += movieObject.productId
+                 else
+                     temp += ',' + movieObject.productId
+             });
+         });
+     });
+     //http://localhost:6010/getsimilaruser?user_id=12345&clicked_items=1001,1002,1003
 
+     console.log(temp);
 
+     //{"prediction":0.8322860969849478,"userId":"35655"}
 
+     //sessionStorage.setItem('clickedItems', JSON.stringify(clickedItems)); // 使用 sessionStorage
+
+     $.getJSON(temp, function(result){
+         console.log(result);
+         console.log(result.prediction)
+         console.log(result.userId)
+         window.location.href = baseUrl+'user.html?id='+sessionStorage.getItem('nowId')+'&rec_user_id='+result.userId;  // 替换成目标 URL
+     });
+
+ }
+
+ function scrollToTop() {
+     window.scrollTo({
+         top: 0,
+         behavior: 'smooth'  // 平滑滚动
+     });
+ }
+
+ function add_product(productId){
+     $.getJSON(baseUrl + "addrating?userId="+sessionStorage.getItem('nowId')+"&clicked_items=" + productId, function(result){
+         console.log(result);
+     });
+ }
+
+ function go_home(){
+     window.location.href = baseUrl+'index.html';
+ }
