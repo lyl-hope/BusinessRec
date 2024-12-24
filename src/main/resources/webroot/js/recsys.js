@@ -14,7 +14,7 @@
                       <div class="movie-card-md1">\
                        <div class="card">\
                         <link-or-emit>\
-                         <a uisref="base.movie" onclick="incrementX();add_product('+movieId+')" href="./movie.html?productId='+movieId+'">\
+                         <a uisref="base.movie" onclick="incrementX();add_product('+movieId+')" href="./product.html?productId='+movieId+'">\
                          <span>\
                            <div class="poster">\
                             <img src="./posters/' + movieId + '.jpg" />\
@@ -25,7 +25,7 @@
                         <div class="overlay">\
                          <div class="above-fold">\
                           <link-or-emit>\
-                           <a uisref="base.movie" onclick="incrementX();add_product('+movieId+')" href="./movie.html?productId='+movieId+'">\
+                           <a uisref="base.movie" onclick="incrementX();add_product('+movieId+')" href="./product.html?productId='+movieId+'">\
                            <span><p class="title">' + movieName + '</p></span></a>\
                           </link-or-emit>\
                           <div class="rating-indicator">\

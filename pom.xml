@@ -41,7 +41,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.sparrowrecsys.online.RecSysServer</mainClass>
+                            <mainClass>com.online.RecSysServer</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
