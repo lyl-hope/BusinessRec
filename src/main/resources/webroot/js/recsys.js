@@ -328,7 +328,7 @@ function add_firstpage(pageId){
      $.getJSON(baseUrl + "getuser?id="+userId, function(userObject){
          var userDetails = '<div class="row movie-details-header movie-details-block">\
                                         <div class="col-md-2 header-backdrop">\
-                                            <img alt="movie backdrop image" height="200" src="./images/avatar/'+userObject.userId%10+'.png">\
+                                            <img alt="movie backdrop image" height="200" src="./images/avatar/'+userObject.userId%783+'.png">\
                                         </div>\
                                         <div class="col-md-9"><h1 class="movie-title"> User'+userObject.userId+' </h1>\
                                             <div class="row movie-highlights">\
