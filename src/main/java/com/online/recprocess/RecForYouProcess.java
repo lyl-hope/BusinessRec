@@ -72,7 +72,7 @@ public class RecForYouProcess {
      */
     public static List<Product> ranker(User user, List<Product> candidates, String model){
         HashMap<Product, Double> candidateScoreMap = new HashMap<>();
-
+        //model="tf_serving_mode";
         switch (model){
             case "emb":
                 // 使用嵌入向量计算相似度
